@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Table, Modal, Button, Descriptions, message } from 'antd';
-import { DollarOutlined } from '@ant-design/icons';
+// import { DollarOutlined } from '@ant-design/icons';
 import { SidebarDemo } from "@/components/Sidebar";
 import ConnectWallet from "@/components/ConnectComponent"
 
 
 const InvoicePage = () => {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
   // Sample invoice data
 const invoices = [
@@ -161,7 +161,7 @@ const invoices = [
         {/* Invoice Details Modal */}
         <Modal
           title="Invoice Details"
-          // visible={isModalVisible}
+          open={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           footer={[
             // <Button key="cancel" onClick={() => setIsModalVisible(false)}>
