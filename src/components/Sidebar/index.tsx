@@ -6,24 +6,25 @@ import {
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
-import { Link, Image } from "@chakra-ui/react";
+// import { Link, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { cn } from "@/components/lib/utils";
 import Logo from "../Logo";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Link from "next/link";
+// import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export function SidebarDemo({ children }) {
   const links = [
     {
       label: "Explore",
-      href: "/explore",
+      href: "/",
       icon: (
         <IconBrandTabler className="text-neutral-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Profile",
-      href: "/profile",
+      label: "Invoices",
+      href: "/invoices",
       icon: (
         <IconUserBolt className="text-neutral-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -33,7 +34,7 @@ export function SidebarDemo({ children }) {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 mx-auto border border-customPurple overflow-y-hidden",
+        "rounded-md flex flex-col md:flex-row bg-neutral-800 w-full flex-1 mx-auto border border-customPurple overflow-y-hidden",
         "h-screen"
       )}
     >

@@ -1,14 +1,15 @@
 "use client";
 import React, { useEffect } from "react";
 // import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { Input } from "antd";
+import { Input, Flex, Progress } from "antd";
 import { SidebarDemo } from "@/components/Sidebar";
+import Statistics from "./Statistics";
+import Table from "./Table";
 
 const { Search } = Input;
 
 const Explore = () => {
   React.useEffect(() => {}, []);
-
 
   const pics = ["album-1.jpg", "album-2.jpg", "album-3.jpg", "album-4.jpg"];
 
@@ -22,7 +23,7 @@ const Explore = () => {
     <SidebarDemo>
       <div className="bg-bgGradient mx-auto px-8 relative">
         <div className="flex pt-3 justify-between items-center  mx-auto ">
-          <h2 className="font-extrabold"> Meme War</h2>
+          <h2 className="font-extrabold"> payBeam</h2>
           {/* <Input maxW={"40%"} placeholder="search" /> */}
           <Search
             placeholder="search"
@@ -36,18 +37,27 @@ const Explore = () => {
               //   setIsCreateModalOpen(true);
             }}
           >
-            create war
+            Create Invoice
           </button>
           {/* <ConnectButton /> */}
         </div>
         {data && (
-          <div className="mt-4">
-            <h2 className="text-3xl font-bold">Recent Transactions</h2>
-            {/* {data && !isLoading && <HoverEffect items={filteredContent} />} */}
+          <div className="mt-4 space-y-6">
+            <h2 className="text-3xl font-bold">Dashboard</h2>
+            <Statistics />
+            <Flex gap="small" vertical>
+              <Progress percent={30} />
+              <Progress percent={50} status="active" />
+              <Progress percent={70} status="exception" />
+              <Progress percent={100} />
+              <Progress percent={50} showInfo={false} />
+            </Flex>
 
+            <Table/>
+            
+            {/* {data && !isLoading && <HoverEffect items={filteredContent} />} */}
             {/* <h2 className="text-3xl font-bold">Ongoing Meme War</h2>
             {data && !isLoading && <UnPairedMeme items={data} />} */}
-
             {/* <h2 className="text-3xl font-bold">Join War</h2> */}
             {/* <CreatedWar /> */}
           </div>

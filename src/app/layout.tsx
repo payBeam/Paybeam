@@ -9,7 +9,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Stellar Dashboard",
+  title: "PayBeam Dashboard",
   description: "Dashboard for managing payments and invoices",
 };
 
