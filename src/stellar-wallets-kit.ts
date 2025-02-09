@@ -13,6 +13,7 @@ enum WalletNetwork {
 const SELECTED_WALLET_ID = "selectedWalletId";
 
 function getSelectedWalletId() {
+  if (typeof window === "undefined") return null; // Ensure this runs only in the browser
   return localStorage.getItem(SELECTED_WALLET_ID);
 }
 

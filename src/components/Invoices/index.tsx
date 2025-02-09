@@ -161,7 +161,7 @@ const invoices = [
         {/* Invoice Details Modal */}
         <Modal
           title="Invoice Details"
-          visible={isModalVisible}
+          // visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           footer={[
             // <Button key="cancel" onClick={() => setIsModalVisible(false)}>
