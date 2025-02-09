@@ -103,16 +103,6 @@ const invoices = [
       key: "amount",
     },
     {
-      title: "Due Date",
-      dataIndex: "dueDate",
-      key: "dueDate",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
       title: "Status",
       dataIndex: "status",
       key: "status",
@@ -126,7 +116,7 @@ const invoices = [
           onClick={() => handleViewInvoice(record)}
           disabled={record.status === "Paid"}
         >
-          View Details
+          View
         </Button>
       ),
     },

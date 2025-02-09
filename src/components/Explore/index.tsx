@@ -30,7 +30,7 @@ const Explore = () => {
             // onSearch={onSearch}
             style={{ width: "40%" }}
           />
-          <button
+          {/* <button
             className="btn px-9"
             onClick={() => {
               console.log("clicked");
@@ -38,7 +38,7 @@ const Explore = () => {
             }}
           >
             Create Invoice
-          </button>
+          </button> */}
           {/* <ConnectButton /> */}
         </div>
         {data && (
