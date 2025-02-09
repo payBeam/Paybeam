@@ -19,7 +19,7 @@ module.exports = {
       },
 
       colors: {
-        primary: "#561D1D", // Dark reddish-brown
+        // primary: "#561D1D", // Dark reddish-brown
         primary50: "#3D1A1A", // Deeper shade of brown
         primary100: "#A37575", // Light brown with a reddish tint
         primary200: "#D9B7B7", // Soft tan
@@ -33,10 +33,10 @@ module.exports = {
         gray: {
           DEFAULT: "#E0E0E0",
         },
-        secondary: {
-          50: "#F1C40F", // Soft Yellow
-          100: "#D4AC0D", // Rich Gold
-        },
+        // secondary: {
+        //   50: "#F1C40F", // Soft Yellow
+        //   100: "#D4AC0D", // Rich Gold
+        // },
         "gradient-start": "#ff7eb3",
         "gradient-middle": "#ff758c",
         "gradient-end": "#ff6f61",
