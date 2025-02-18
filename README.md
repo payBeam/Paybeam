@@ -1,4 +1,4 @@
-# PayBeam
+# payBeam
 
 ## 🌟 Inspiration
 Managing group payments and third-party transactions has always been a hassle. From splitting restaurant bills to sharing Airbnb expenses, the traditional approach often involves manual calculations, multiple transfers, and awkward reimbursement requests. PayBeam simplifies this by enabling seamless multi-party payments on the **Stellar blockchain**, ensuring **fast, secure, and automated** transactions.
