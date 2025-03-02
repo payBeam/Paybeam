@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
-// Initialize Supabase client
+// Initialize Supabase clientT
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default supabase;
