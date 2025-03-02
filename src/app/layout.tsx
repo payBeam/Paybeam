@@ -10,10 +10,13 @@ import { UserContextProvider } from "@/Context"
 
 const inter = Inter({ subsets: ["latin"] });
 
+
 export const metadata: Metadata = {
-  title: "PayBeam Dashboard",
-  description: "Dashboard for managing payments and invoices",
+  title: "PayBeam",
+  description: "A seamless platform to automate, split, and manage payments with security and transparency.",
 };
+  
+
 
 export default function RootLayout({
   children,
