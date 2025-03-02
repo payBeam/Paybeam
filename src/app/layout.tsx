@@ -5,6 +5,7 @@ import StyledComponentsRegistry from "./providers/AntdRegistry";
 import { ConfigProvider } from "antd";
 import theme from "../styles/theme";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StyledComponentsRegistry>
+          <Toaster />
           <ConfigProvider theme={theme}>{children}</ConfigProvider>
         </StyledComponentsRegistry>
       </body>

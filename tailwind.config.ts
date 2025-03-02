@@ -4,7 +4,6 @@ const {
 
 module.exports = {
     darkMode: ["class"],
-    darkMode: "class",
   content: ["./src/**/*.{ts,tsx,js,ts,jsx, mdx}"],
   prefix: "",
   theme: {

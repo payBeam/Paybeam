@@ -21,6 +21,7 @@ function LandingPage() {
             <Why />
             <Trade />
             <Footer />
+            
         </div>
     );
 }

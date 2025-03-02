@@ -44,7 +44,7 @@ function WaitlistModal({ showModal, setShowModal, addToWaitlist, loading }) {
 
     return (
         <div
-            className="fixed  md:inset-0  lg:inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            className="fixed insert-0 mx-auto md:inset-0  lg:inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
             onClick={closeModal}
         >
             <div
@@ -74,7 +74,7 @@ function WaitlistModal({ showModal, setShowModal, addToWaitlist, loading }) {
                             {...register("name", { required: "Name is required" })}
                         />
                         {errors.name && (
-                            <p className="text-red-600">{errors.name.message}</p>
+                            <p className="text-red-600">{errors?.name?.message}</p>
                         )}
                     </div>
 
@@ -91,16 +91,12 @@ function WaitlistModal({ showModal, setShowModal, addToWaitlist, loading }) {
                             })}
                         />
                         {errors.email && (
-                            <p className="text-red-600">{errors.email.message}</p>
+                            <p className="text-red-600">{errors?.email?.message}</p>
                         )}
                     </div>
                     <Button
-                        w="full"
-                        color="purple"
-                        text="white"
-                        type="submit"
-                        isDisabled={loading}
-                        isLoading={loading}
+                        type="primary"
+                        loading={loading}
                     >
                         Submit
                     </Button>
