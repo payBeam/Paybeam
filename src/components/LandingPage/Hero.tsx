@@ -66,8 +66,8 @@ function Hero() {
             )}
             <div className="container mx-auto">
                 <Navbar />
-                <div className="flex flex-col items-center lg:flex-row mt-[30px]">
-                    <div className="flex-1 z-40">
+                <div className="flex flex-col items-center justify-center  lg:flex-row mt-[30px]">
+                    <div className="flex-1 z-40 mt-12">
                         {/* badge text */}
 
                         {/* title */}
@@ -91,7 +91,7 @@ function Hero() {
                            Your Bills!
                         </div>
                         <button
-                            className="btn gap-x-6 pl-6 text-sm lg:h-16 my-12 lg:text-base z-50"
+                            className="btn gap-x-6 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
                             data-aos="fade-down"
                             data-aos-delay="700"
                             // onClick={() => setShowModal(true)}
@@ -102,7 +102,7 @@ function Hero() {
                     </div>
                     {/* Hero image */}
                     <div
-                        className="flex-1 w-[90%]"
+                        className="flex-1 w-[80%]"
                         data-aos="fade-up"
                         data-aos-delay="600"
                     >
