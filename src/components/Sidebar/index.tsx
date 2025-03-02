@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 // import { Link, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { cn } from "@/components/lib/utils";
+import { cn } from "@/lib/utils";
 import Logo from "../Logo";
 import Link from "next/link";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";

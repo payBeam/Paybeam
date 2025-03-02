@@ -1,15 +1,13 @@
 "use client";
 import React from "react";
-import Explore_ from "@/components/Explore";
+import Page from "@/components/LandingPage";
 import Head from "@/components/Head";
 
-function Explore() {
+export default function Home() {
   return (
     <div>
-      <Head title="Explore" />
-      <Explore_ />
+      <Head title="Home" />
+      <Page />
     </div>
   );
 }
-
-export default Explore;
