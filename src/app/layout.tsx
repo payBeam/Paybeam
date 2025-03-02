@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import theme from "../styles/theme";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { UserContextProvider } from "@/Context"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <Toaster />
-          <ConfigProvider theme={theme}>{children}</ConfigProvider>
+          <UserContextProvider>
+            <Toaster />
+            <ConfigProvider theme={theme}>{children}</ConfigProvider>
+          </UserContextProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

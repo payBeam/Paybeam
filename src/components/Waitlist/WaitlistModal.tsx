@@ -1,11 +1,43 @@
-// import { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Button } from "antd";
+import supabase from "@/Services/supabase";
+import { useClient } from "@/Context";
 
-function WaitlistModal({ showModal, setShowModal, addToWaitlist, loading }) {
+interface WaitlistFormData {
+    name: string;
+    email: string;
+}
+
+function WaitlistModal({ showModal }) {
+    const { setIsModalOpen } = useClient();
     // Close modal when user clicks outside or on close icon
-    const closeModal = () => setShowModal(false);
+    const closeModal = () => setIsModalOpen(false);
+    const [loading, setLoading] = useState(false);
+
+
+    const addToWaitlist = async (data: WaitlistFormData) => {
+        try {
+            setLoading(true);
+            const { error } = await supabase
+                .from("waitlist")
+                .insert([{ name: data.name, email: data.email }])
+                .select();
+
+            if (error) {
+                setLoading(false);
+                toast.error("Error adding to waitlist");
+                console.error("Error adding to waitlist:", error);
+            } else {
+                setLoading(false);
+                console.log("Successfully added to waitlist:", data);
+            }
+        } catch (error) {
+            setLoading(false);
+            console.error("An unexpected error occurred:", error);
+        }
+    };
 
     // Hook form setup
     const {

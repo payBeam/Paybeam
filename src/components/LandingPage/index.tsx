@@ -7,11 +7,18 @@ import Trade from "@/components/LandingPage/Trade";
 import Stats from "@/components/LandingPage/Stats";
 import  HowItWorks from "@/components/features-section-demo-3"
 // import Hero from "./Hero";
+import { useClient } from "@/Context";
+import WaitlistModal from "@/components/Waitlist/WaitlistModal"
+
 
 const Hero = dynamic(() => import("./Hero"), { ssr: false });
 const Why = dynamic(() => import("./Why"), { ssr: false });
 
 function LandingPage() {
+    const {isModalOpen} = useClient();
+
+
+
     if (typeof window === "undefined") {
         return null; // Prevent rendering on the server
     }
@@ -23,6 +30,11 @@ function LandingPage() {
             <Why />
             {/* <Trade /> */}
             <Footer />
+            {isModalOpen && (
+                <WaitlistModal
+                    showModal={isModalOpen}
+                />
+            )}
             
         </div>
     );
