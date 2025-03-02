@@ -66,9 +66,9 @@ const Stats = () => {
                                 className="text-2xl font-bold lg:text-[40px]
             lg:mb-2"
                             >
-                                7
+                                2
                             </div>
-                            <div className="text-gray-400">War completed</div>
+                            <div className="text-gray-400">Blockchain Support</div>
                         </div>
                     </div>
                 </div>
