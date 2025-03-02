@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 // import Why from "./Why";
 import Trade from "@/components/LandingPage/Trade";
 import Stats from "@/components/LandingPage/Stats";
+import  HowItWorks from "@/components/features-section-demo-3"
 // import Hero from "./Hero";
 
 const Hero = dynamic(() => import("./Hero"), { ssr: false });
@@ -18,8 +19,9 @@ function LandingPage() {
         <div className="bg-custom-gradient">
             <Hero />
             <Stats />
+            <HowItWorks/>
             <Why />
-            <Trade />
+            {/* <Trade /> */}
             <Footer />
             
         </div>

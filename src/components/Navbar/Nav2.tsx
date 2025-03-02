@@ -21,9 +21,9 @@ function Nav2() {
 
             <div className="hidden md:flex gap-12 items-center justify-center z-[20]">
                 <button
-                    onClick={() => {
-                        router.push("/connect-wallet");
-                    }}
+                    // onClick={() => {
+                    //     router.push("/connect-wallet");
+                    // }}
                     className="btn"
                 >
                     Home

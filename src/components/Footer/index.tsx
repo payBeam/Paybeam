@@ -12,10 +12,10 @@ function Footer() {
                     <a
                         href="#"
                         target="_blank"
-                        rel="Ethena"
+                        rel="Steller"
                         className="text-red-800 font-bold"
                     >
-                        BNB
+                        Steller
                     </a>
                 </p>
             </div>
@@ -25,16 +25,16 @@ function Footer() {
                 <p className="cursor-pointer">Conditions</p>
             </div>
             <div className="flex gap-7 z-[100000]">
-                <a href="#" target="_blank" rel="Suii Twitter">
+                <a href="https://x.com/paybeam_hq?s=21" target="_blank" rel="payBeam Twitter">
                     <FaXTwitter />
                 </a>
-                <a href="#" target="_blank" rel="Suii Discord">
+                <a href="https://discord.gg/zrKr7EVZwS" target="_blank" rel="payBeam Discord">
                     <FaDiscord />
                 </a>
-                <a href="#" target="_blank" rel="Suii Github">
+                <a href="#" target="_blank" rel="payBeam Github">
                     <FaGithub />
                 </a>
-                <a href="#" target="_blank" rel="Suii Medium">
+                <a href="#" target="_blank" rel="payBeam Medium">
                     <FaMedium />
                 </a>
             </div>

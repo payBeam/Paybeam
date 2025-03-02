@@ -17,7 +17,7 @@ const Stats = () => {
                     <div className="flex items-center gap-x-6">
                         {/* item icon */}
                         <div
-                            className="bg-white/10 flex rounded-full items-center w-20 h-20 justify-center text-blue
+                            className="bg-white/10 flex rounded-full items-center w-20 h-20 justify-center text-electricBlue
           text-2xl lg:text-4xl"
                         >
                             <HiChartBar />
@@ -30,13 +30,13 @@ const Stats = () => {
                             >
                                 $100
                             </div>
-                            <div className="text-gray">Transactions Processed</div>
+                            <div className="text-gray-400">Transactions Processed</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-x-6">
                         {/* item icon */}
                         <div
-                            className="bg-white/10 flex rounded-full items-center w-20 h-20 justify-center text-blue
+                            className="bg-white/10 flex rounded-full items-center w-20 h-20 justify-center text-electricBlue
           text-2xl lg:text-4xl"
                         >
                             <HiUser />
@@ -49,13 +49,13 @@ const Stats = () => {
                             >
                                 200
                             </div>
-                            <div className="text-gray">Wallets Connected</div>
+                            <div className="text-gray-400">Wallets Connected</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-x-6">
                         {/* item icon */}
                         <div
-                            className="bg-white/10 flex rounded-full items-center w-20 h-20 justify-center text-blue
+                            className="bg-white/10 flex rounded-full items-center w-20 h-20 justify-center text-electricBlue
           text-2xl lg:text-4xl"
                         >
                             <HiGlobe />
@@ -68,7 +68,7 @@ const Stats = () => {
                             >
                                 7
                             </div>
-                            <div className="text-gray">War completed</div>
+                            <div className="text-gray-400">War completed</div>
                         </div>
                     </div>
                 </div>

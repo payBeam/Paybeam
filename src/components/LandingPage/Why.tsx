@@ -33,19 +33,18 @@ const Why = () => {
           </div>
           {/* text */}
           <div className="w-full">
-            <h2 className="section-title">Why You Should Join Meme War</h2>
+            <h2 className="section-title">Why You Should use payBeam</h2>
             <p className="section-subtitle">
-              Dive into the ultimate meme showdown! Compete in high-stakes
-              battles, engage with the community, and win rewards powered by
-              blockchain and AI. Showcase your creativity, claim victory, and
-              dominate the Meme War arena with ease and fairness.
+              payBeam offers seamless, automated payments with effortless transaction splitting, ensuring low-cost, 
+              near-instant transfers powered by blockchain. With smart contracts and multi-signature security, 
+              every transaction is secure, transparent, and verifiable.
             </p>
             {/* <a
               href="https://medium.com/@glintfund"
               target="_blank"
               rel="GlintFund Medium"
             > */}
-            <button className="btn px-6">Learn more</button>
+            <button className="btn px-6 my-8">Learn more</button>
             {/* </a> */}
           </div>
         </div>

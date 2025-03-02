@@ -91,10 +91,10 @@ function Hero() {
                            Your Bills!
                         </div>
                         <button
-                            className="btn gap-x-6 pl-6 text-sm lg:h-16 lg:text-base z-50"
+                            className="btn gap-x-6 pl-6 text-sm lg:h-16 my-12 lg:text-base z-50"
                             data-aos="fade-down"
                             data-aos-delay="700"
-                            onClick={() => setShowModal(true)}
+                            // onClick={() => setShowModal(true)}
                         >
                             Join Waitlist
                             <IoIosArrowDroprightCircle className="text-2xl lg:text-3xl" />
