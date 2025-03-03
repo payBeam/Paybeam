@@ -15,7 +15,7 @@ function Footer() {
                         rel="Steller"
                         className="text-red-800 font-bold"
                     >
-                        Steller
+                        Stellar
                     </a>
                 </p>
             </div>
