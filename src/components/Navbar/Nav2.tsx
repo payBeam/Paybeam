@@ -29,7 +29,7 @@ function Nav2() {
                     Home
                 </button>
                 <a href="#" target="_blank" rel="payBeam">
-                    <p className="cursor-pointer">Learn</p>
+                    <p className="cursor-pointer">Developer</p>
                 </a>
                 <a href="https://discord.gg/zrKr7EVZwS" target="_blank" rel="payBeam Discord">
                     <p className="cursor-pointer">Community</p>

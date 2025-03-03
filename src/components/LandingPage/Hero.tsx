@@ -12,7 +12,7 @@ import { useClient } from "@/Context";
 
 function Hero() {
     const router = useRouter();
-    const words_ = ["Split", "Transfer", "View"];
+    const words_ = ["Split", "Transfer"];
 
     const options = {
         animationData: ICON,
@@ -49,7 +49,7 @@ function Hero() {
                             data-aos="fade-down"
                             data-aos-delay="600"
                         >
-                           With payBeam You Can :
+                           With payBeam You Can
                             <FlipWords className="text-electricBlue-dark dark:text-electricBlue-dark" words={words_} />
                            Your Bills!
                         </div>
