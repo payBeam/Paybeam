@@ -1,6 +1,7 @@
 "use client";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
+import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import Navbar from "../Navbar/Nav2";
 import { BackgroundBeams } from "@/components/ui/background-beams";
@@ -19,14 +20,14 @@ function Hero() {
         loop: true,
     };
 
-     const {setIsModalOpen} = useClient();
+    const { setIsModalOpen } = useClient();
 
     //"Unleash Your Meme Power: Battle, Engage, and Win Big in the Ultimate Meme War Arena!"
     // const { View } = useLottie(options);
     return (
         <section className="">
             <BackgroundBeams />
-           
+
             <div className="container mx-auto">
                 <Navbar />
                 <div className="flex flex-col items-center justify-center  lg:flex-row mt-[30px]">
@@ -39,7 +40,7 @@ function Hero() {
                             data-aos="fade-down"
                             data-aos-delay="500"
                         >
-                            automates payments, enabling   
+                            automates payments, enabling
                             <span className="text-electricBlue"> seamless split payments, </span>
                             smart invoicing, and effortless transactions
                             <span className="text-electricBlue"> using blockchain.</span>
@@ -49,19 +50,31 @@ function Hero() {
                             data-aos="fade-down"
                             data-aos-delay="600"
                         >
-                           With payBeam You Can
+                            With payBeam You Can
                             <FlipWords className="text-electricBlue-dark dark:text-electricBlue-dark" words={words_} />
-                           Your Bills!
+                            Your Bills!
                         </div>
-                        <button
-                            className="btn gap-x-6 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
-                            data-aos="fade-down"
-                            data-aos-delay="700"
-                            onClick={() => setIsModalOpen(true)}
-                        >
-                            Join Waitlist
-                            <IoIosArrowDroprightCircle className="text-2xl lg:text-3xl" />
-                        </button>
+                        <div className="flex space-x-4 ">
+
+                            <button
+                                className="btn gap-x-6 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
+                                data-aos="fade-down"
+                                data-aos-delay="700"
+                                onClick={() => setIsModalOpen(true)}
+                            >
+                                Join Waitlist
+                                <IoIosArrowDroprightCircle className="text-2xl lg:text-3xl" />
+                            </button>
+                            <button
+                                className="btn dark:bg-transparent  gap-x-2 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
+                                data-aos="fade-down"
+                                data-aos-delay="700"
+                                onClick={() => setIsModalOpen(true)}
+                            >
+                                Continue with
+                                <FcGoogle className="text-2xl lg:text-3xl bg-white rounded-full dark:bg-transparent" />
+                            </button>
+                        </div>
                     </div>
                     {/* Hero image */}
                     <div
@@ -72,9 +85,9 @@ function Hero() {
                         <Lottie animationData={ICON} loop={true} />
                     </div>
                 </div>
-         
+
             </div>
-           
+
         </section>
     );
 }
