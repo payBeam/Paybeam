@@ -7,15 +7,17 @@ import theme from "../styles/theme";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { UserContextProvider } from "@/Context"
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
 
 export const metadata: Metadata = {
-  title: "PayBeam",
+  title: "payBeam",
   description: "A seamless platform to automate, split, and manage payments with security and transparency.",
 };
-  
+
 
 
 export default function RootLayout({
@@ -26,12 +28,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <UserContextProvider>
-            <Toaster />
-            <ConfigProvider theme={theme}>{children}</ConfigProvider>
-          </UserContextProvider>
-        </StyledComponentsRegistry>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID} >
+          <StyledComponentsRegistry>
+            <UserContextProvider>
+              <Toaster toastOptions={{
+                className: "",
+                style: {
+                  border: `1px solid #AC6AFF`,
+                  padding: "16px",
+                  color: "#AC6AFF",
+                  backgroundColor: "#FFC876",
+                  borderRadius: "8px",
+                  fontFamily: "Arial, sans-serif",
+                },
+              }} />
+              <ConfigProvider theme={theme}>{children}</ConfigProvider>
+            </UserContextProvider>
+          </StyledComponentsRegistry>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

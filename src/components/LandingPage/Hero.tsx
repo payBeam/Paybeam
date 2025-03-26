@@ -9,11 +9,61 @@ import { FlipWords } from "@/components/ui/flip-words";
 import Lottie from "lottie-react";
 import ICON from "@/components/GIF/home-icon.json";
 import { useClient } from "@/Context";
-
+import { useGoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast"
 
 function Hero() {
     const router = useRouter();
     const words_ = ["Split", "Transfer"];
+
+
+
+    const login = useGoogleLogin({
+        flow: 'implicit',
+        onSuccess: codeResponse => {
+            handleSuccess(codeResponse)
+        },
+        scope: 'openid profile email',
+
+    });
+
+    const handleSuccess = async (codeResponse: any) => {
+
+        try {
+            if (!codeResponse || (!codeResponse.access_token)) {
+                throw new Error('Invalid response from Google');
+            }
+            let userData;
+            const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${codeResponse.access_token}` }
+            });
+            userData = await response.json();
+    
+
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token: userData})
+
+            })
+
+            const data = await res.json()
+
+            if (!res.ok) {
+                toast.error(data.data);
+                return
+            }
+            toast.success("Login successful!");
+            // TODO : Dispatch value to redu toolkit
+            router.push("/dashboard");
+
+        } catch (error) {
+            console.error("Error verifying token:", error);
+            toast.error(error.message);
+        }
+    };
 
     const options = {
         animationData: ICON,
@@ -56,7 +106,7 @@ function Hero() {
                         </div>
                         <div className="flex space-x-4 ">
 
-                            <button
+                            {/* <button
                                 className="btn gap-x-6 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
                                 data-aos="fade-down"
                                 data-aos-delay="700"
@@ -64,16 +114,19 @@ function Hero() {
                             >
                                 Join Waitlist
                                 <IoIosArrowDroprightCircle className="text-2xl lg:text-3xl" />
-                            </button>
+                            </button> */}
                             <button
                                 className="btn dark:bg-transparent  gap-x-2 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
                                 data-aos="fade-down"
                                 data-aos-delay="700"
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={() => login()}
+                            // onClick={() => handleSuccess({ code: "ghghghg" })}
                             >
                                 Continue with
                                 <FcGoogle className="text-2xl lg:text-3xl bg-white rounded-full dark:bg-transparent" />
                             </button>
+
+
                         </div>
                     </div>
                     {/* Hero image */}

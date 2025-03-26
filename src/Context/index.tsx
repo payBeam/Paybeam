@@ -23,7 +23,7 @@ export const useUserContext = () => {
         isModalOpen,
         setIsModalOpen,
     };
-};
+}; 
 
 export const UserContextProvider = ({ children }) => {
     const auth = useUserContext();
