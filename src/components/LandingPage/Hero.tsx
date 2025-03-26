@@ -11,10 +11,15 @@ import ICON from "@/components/GIF/home-icon.json";
 import { useClient } from "@/Context";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast"
+import api, { storeTokens } from "@/utils/auth";
+import { useAppDispatch } from "@/redux/hook";
+import { addProfile } from "@/redux/slice/ProfileSlice";
+
 
 function Hero() {
     const router = useRouter();
     const words_ = ["Split", "Transfer"];
+    const dispatch = useAppDispatch();
 
 
 
@@ -38,25 +43,23 @@ function Hero() {
                 headers: { Authorization: `Bearer ${codeResponse.access_token}` }
             });
             userData = await response.json();
-    
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ token: userData})
 
+            const res = await api.post(`/api/auth/google`, {
+                userData: userData
             })
 
-            const data = await res.json()
+            console.log("res",res)
+            const data = await res.data.data
 
-            if (!res.ok) {
+            if (res.statusText != "OK") {
                 toast.error(data.data);
                 return
             }
             toast.success("Login successful!");
             // TODO : Dispatch value to redu toolkit
+            storeTokens(data.accessToken);
+            dispatch(addProfile(data.user))
             router.push("/dashboard");
 
         } catch (error) {

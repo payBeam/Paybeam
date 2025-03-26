@@ -6,8 +6,8 @@ import { ConfigProvider } from "antd";
 import theme from "../styles/theme";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import { UserContextProvider } from "@/Context"
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Providers from "./providers"
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,9 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID} >
-          <StyledComponentsRegistry>
-            <UserContextProvider>
+        <Providers>
+
+          <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID} >
+            <StyledComponentsRegistry>
               <Toaster toastOptions={{
                 className: "",
                 style: {
@@ -43,9 +44,11 @@ export default function RootLayout({
                 },
               }} />
               <ConfigProvider theme={theme}>{children}</ConfigProvider>
-            </UserContextProvider>
-          </StyledComponentsRegistry>
-        </GoogleOAuthProvider>
+            </StyledComponentsRegistry>
+          </GoogleOAuthProvider>
+
+        </Providers>
+
       </body>
     </html>
   );
