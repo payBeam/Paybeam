@@ -166,7 +166,7 @@ const invoices = [
             // >
             //   Sign and Pay
             // </Button>
-            <ConnectWallet/>
+            <ConnectWallet title={'Connect and Pay'}/>
           ]}
         >
           {selectedInvoice && (

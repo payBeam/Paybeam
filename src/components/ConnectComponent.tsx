@@ -5,7 +5,11 @@ import { getPublicKey, connect, disconnect } from "../stellar-wallets-kit";
 
 const { Text } = Typography;
 
-const ConnectComponent: React.FC = () => {
+interface ConnectWalletProps {
+  title: string;
+}
+
+const ConnectComponent: React.FC<ConnectWalletProps> = ({title = "Sign and Pay"}) => {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
@@ -61,7 +65,7 @@ const ConnectComponent: React.FC = () => {
           onClick={handleConnect}
           style={{ display: isConnected ? "none" : "inline-block" }}
         >
-          Sign and Pay
+          {title}
         </Button>
         <Button
           danger

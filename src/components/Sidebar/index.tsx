@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import Logo from "../Logo";
 import Link from "next/link";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
+import ThemeToggle from "@/components/ThemeToggle"
+
 
 export function SidebarDemo({ children }) {
   const links = [
@@ -48,6 +50,9 @@ export function SidebarDemo({ children }) {
               ))}
             </div>
           </div>
+
+          <ThemeToggle />
+
           <div>{/* <ConnectButton /> */}</div>
         </SidebarBody>
       </Sidebar>

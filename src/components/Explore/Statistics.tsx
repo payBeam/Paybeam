@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic, Button } from 'antd';
+import ConnectWallet from "@/components/ConnectComponent"
+
 
 const App: React.FC = () => (
   <Row gutter={16}>
@@ -8,7 +10,7 @@ const App: React.FC = () => (
       <Card bordered={false}>
         <Statistic
           title="Today"
-          value={11.28}
+          value={1.28}
           precision={2}
           valueStyle={{ color: "#3f8600" }}
           prefix={<ArrowUpOutlined />}
@@ -30,9 +32,7 @@ const App: React.FC = () => (
     </Col>
     <Col span={12}>
       <Statistic title="Account Balance (USDC)" value={200000} precision={2} />
-      <Button style={{ marginTop: 16 }} type="primary">
-        Recharge
-      </Button>
+      <ConnectWallet title={"Connect Wallet"} />
     </Col>
     <Col span={12}>
       <Statistic title="Active Users" value={112893} loading />

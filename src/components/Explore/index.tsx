@@ -21,7 +21,7 @@ const Explore = () => {
 
   return (
     <SidebarDemo>
-      <div className="bg-bgGradient mx-auto px-8 relative">
+      <div className="mx-auto px-8 relative">
         <div className="flex pt-3 justify-between items-center  mx-auto ">
           <h2 className="font-extrabold"> payBeam</h2>
           {/* <Input maxW={"40%"} placeholder="search" /> */}
@@ -30,7 +30,7 @@ const Explore = () => {
             // onSearch={onSearch}
             style={{ width: "40%" }}
           />
-          {/* <button
+          <button
             className="btn px-9"
             onClick={() => {
               console.log("clicked");
@@ -38,7 +38,7 @@ const Explore = () => {
             }}
           >
             Create Invoice
-          </button> */}
+          </button>
           {/* <ConnectButton /> */}
         </div>
         {data && (
