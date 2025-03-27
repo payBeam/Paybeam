@@ -1,4 +1,5 @@
 import axios from "axios"
+import toast from "react-hot-toast"
 
 
 export const storeTokens = (accessToken: string) => {
@@ -31,22 +32,34 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        // If 401 and not already retried
+        // Case 1: Token expired (401) + not yet retried
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
             try {
-                // Attempt to refresh token
-                const newAccessToken = await refreshAccessToken();
-
-                // Retry original request with new token
+                const newAccessToken = await refreshAccessToken(); // Try refresh
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return api(originalRequest);
+                return api(originalRequest); // Retry request
             } catch (refreshError) {
-                // Refresh failed - log user out
-                logout();
+                // Refresh failed → Auto-logout
+                await logout();
+                toast.error("Your session has expired. Please log in again.");
+                redirectTo("/"); // Hard redirect to landing
                 return Promise.reject(refreshError);
             }
+        }
+
+        // Case 2: Other auth-related errors (403, 400, etc.)
+        if ([403, 400].includes(error.response?.status)) {
+            await logout();
+            toast.error("You’ve been logged out due to inactivity.");
+            redirectTo("/");
+            return Promise.reject(error);
+        }
+
+        // Case 3: Network/server errors (optional)
+        if (!error.response) {
+            toast.error("Network error. Please check your connection.");
         }
 
         return Promise.reject(error);
@@ -57,13 +70,21 @@ api.interceptors.response.use(
 const refreshAccessToken = async () => {
     try {
         // Note: The refresh token is automatically sent via HTTP-only cookie
-        const response = await axios.post('/api/auth/refresh-token');
+        const response = await api.post('/api/auth/refresh-token');
         const { accessToken } = response.data.data;
 
         storeTokens(accessToken);
         return accessToken;
     } catch (error) {
+        console.log(error)
         throw new Error('Failed to refresh token');
+    }
+};
+
+// Helper: Safe redirect (works in SSR/Next.js)
+const redirectTo = (path: string) => {
+    if (typeof window !== "undefined") {
+        window.location.href = path; // Full page reload (clears state)
     }
 };
 

@@ -11,15 +11,12 @@ import ICON from "@/components/GIF/home-icon.json";
 import { useClient } from "@/Context";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast"
-import api, { storeTokens } from "@/utils/auth";
-import { useAppDispatch } from "@/redux/hook";
-import { addProfile } from "@/redux/slice/ProfileSlice";
-
+import { useCreateUser } from "@/hooks/useUser" 
 
 function Hero() {
     const router = useRouter();
     const words_ = ["Split", "Transfer"];
-    const dispatch = useAppDispatch();
+ 
 
 
 
@@ -31,6 +28,9 @@ function Hero() {
         scope: 'openid profile email',
 
     });
+
+
+    const mutation = useCreateUser();
 
     const handleSuccess = async (codeResponse: any) => {
 
@@ -44,23 +44,24 @@ function Hero() {
             });
             userData = await response.json();
 
+            mutation.mutate("userData");
 
-            const res = await api.post(`/api/auth/google`, {
-                userData: userData
-            })
 
-            console.log("res",res)
-            const data = await res.data.data
-
-            if (res.statusText != "OK") {
-                toast.error(data.data);
-                return
+            if (mutation.isError) {
+                console.log("error",mutation.error)
             }
+
+
+            // if (mutation.isError) {
+            //     if (mutation.data && mutation.data.data) {
+            //         toast.error(mutation.data.data);
+            //     }
+            //     return
+            // }
             toast.success("Login successful!");
-            // TODO : Dispatch value to redu toolkit
-            storeTokens(data.accessToken);
-            dispatch(addProfile(data.user))
-            router.push("/dashboard");
+            // TODO : Dispatch value to redux toolkit
+
+            // router.push("/dashboard");
 
         } catch (error) {
             console.error("Error verifying token:", error);

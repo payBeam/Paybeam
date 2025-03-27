@@ -5,17 +5,20 @@ import { Input, Flex, Progress } from "antd";
 import { SidebarDemo } from "@/components/Sidebar";
 import Statistics from "./Statistics";
 import Table from "./Table";
+import { useQueryClient } from '@tanstack/react-query';
+import { useUser } from "@/hooks/useUser";
+
 
 const { Search } = Input;
 
 const Explore = () => {
-  React.useEffect(() => {}, []);
+  React.useEffect(() => { }, []);
 
-  const pics = ["album-1.jpg", "album-2.jpg", "album-3.jpg", "album-4.jpg"];
 
-  const getRandomImage = () => {
-    return pics[Math.floor(Math.random() * pics.length)];
-  };
+  const { data: user, isLoading, isError, error } = useUser();
+  console.log("user", user);
+  console.log("error", error);
+
 
   const data = [];
 
@@ -53,8 +56,8 @@ const Explore = () => {
               <Progress percent={50} showInfo={false} />
             </Flex>
 
-            <Table/>
-            
+            <Table />
+
             {/* {data && !isLoading && <HoverEffect items={filteredContent} />} */}
             {/* <h2 className="text-3xl font-bold">Ongoing Meme War</h2>
             {data && !isLoading && <UnPairedMeme items={data} />} */}
