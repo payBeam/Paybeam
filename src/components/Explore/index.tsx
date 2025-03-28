@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
 // import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { Input, Flex, Progress } from "antd";
+import { Input, Flex, Progress, Spin } from "antd";
 import { SidebarDemo } from "@/components/Sidebar";
 import Statistics from "./Statistics";
 import Table from "./Table";
-import { useQueryClient } from '@tanstack/react-query';
+// import { useQueryClient } from '@tanstack/react-query';
 import { useUser } from "@/hooks/useUser";
 
 
@@ -14,58 +14,58 @@ const { Search } = Input;
 const Explore = () => {
   React.useEffect(() => { }, []);
 
-
+  //TODO toast error
   const { data: user, isLoading, isError, error } = useUser();
-  console.log("user", user);
-  console.log("error", error);
+  console.log("user", user?.data?.merchant);
+  // console.log("error", error);
 
-
-  const data = [];
 
   return (
     <SidebarDemo>
-      <div className="mx-auto px-8 relative">
-        <div className="flex pt-3 justify-between items-center  mx-auto ">
-          <h2 className="font-extrabold"> payBeam</h2>
-          {/* <Input maxW={"40%"} placeholder="search" /> */}
-          <Search
-            placeholder="search"
-            // onSearch={onSearch}
-            style={{ width: "40%" }}
-          />
-          <button
-            className="btn px-9"
-            onClick={() => {
-              console.log("clicked");
-              //   setIsCreateModalOpen(true);
-            }}
-          >
-            Create Invoice
-          </button>
-          {/* <ConnectButton /> */}
-        </div>
-        {data && (
-          <div className="mt-4 space-y-6">
-            <h2 className="text-3xl font-bold">Dashboard</h2>
-            <Statistics />
-            <Flex gap="small" vertical>
-              <Progress percent={30} />
-              <Progress percent={50} status="active" />
-              <Progress percent={70} status="exception" />
-              <Progress percent={100} />
-              <Progress percent={50} showInfo={false} />
-            </Flex>
+      {isLoading ? (<div className="flex justify-center h-[100vh] items-center"><Spin /></div>
+      ) : (
 
-            <Table />
 
-            {/* {data && !isLoading && <HoverEffect items={filteredContent} />} */}
-            {/* <h2 className="text-3xl font-bold">Ongoing Meme War</h2>
-            {data && !isLoading && <UnPairedMeme items={data} />} */}
-            {/* <h2 className="text-3xl font-bold">Join War</h2> */}
-            {/* <CreatedWar /> */}
+        <div className="mx-auto px-8 relative">
+          <div className="flex pt-3 justify-between items-center  mx-auto ">
+            <h2 className="font-extrabold"> payBeam</h2>
+            {/* <Input maxW={"40%"} placeholder="search" /> */}
+            <Search
+              placeholder="search"
+              // onSearch={onSearch}
+              style={{ width: "40%" }}
+            />
+
+            {/* <ConnectButton /> */}
           </div>
-        )}
-      </div>
+          {user?.data && (
+            <div>
+              {user?.data?.merchant?.id ? (
+
+                <div className="mt-4 space-y-6">
+                  <h2 className="text-3xl font-bold">Dashboard</h2>
+                  <h2 className="text-sm font-primary50">welcome {user?.data?.merchant?.name} 💖</h2>
+                  <Statistics />
+                  <Flex gap="small" vertical>
+                    <Progress percent={30} />
+                    <Progress percent={50} status="active" />
+                    <Progress percent={70} status="exception" />
+                    <Progress percent={100} />
+                    <Progress percent={50} showInfo={false} />
+                  </Flex>
+
+                  <Table />
+                </div>
+              ) : (
+                <div>
+                  <div className="flex justify-center h-[100vh] items-center"><Spin /></div>
+
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </SidebarDemo>
   );
 };

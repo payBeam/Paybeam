@@ -20,6 +20,7 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use((config) => {
     const token = getAccessToken();
+    // console.log("token", token)
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -32,8 +33,10 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
+        console.log("Error-----", error)
+
         // Case 1: Token expired (401) + not yet retried
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry || error?.response.data.data.includes("jwt")) {
             originalRequest._retry = true;
 
             try {
@@ -44,7 +47,7 @@ api.interceptors.response.use(
                 // Refresh failed → Auto-logout
                 await logout();
                 toast.error("Your session has expired. Please log in again.");
-                redirectTo("/"); // Hard redirect to landing
+                // Hard redirect to landing
                 return Promise.reject(refreshError);
             }
         }
@@ -53,7 +56,6 @@ api.interceptors.response.use(
         if ([403, 400].includes(error.response?.status)) {
             await logout();
             toast.error("You’ve been logged out due to inactivity.");
-            redirectTo("/");
             return Promise.reject(error);
         }
 
@@ -89,12 +91,15 @@ const redirectTo = (path: string) => {
 };
 
 // Logout function
-export const logout = () => {
+export const logout = async () => {
     // Clear frontend tokens
     sessionStorage.removeItem('accessToken');
 
     // Call backend logout to clear HTTP-only cookie
-    return api.post('/api/auth/logout');
+    await api.post('/api/auth/logout');
+    toast.success("logout successful");
+    redirectTo("/");
+    return
 };
 
 export default api;

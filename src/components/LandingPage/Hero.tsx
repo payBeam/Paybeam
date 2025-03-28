@@ -11,12 +11,17 @@ import ICON from "@/components/GIF/home-icon.json";
 import { useClient } from "@/Context";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast"
-import { useCreateUser } from "@/hooks/useUser" 
+import { useCreateUser } from "@/hooks/useUser"
+import { addProfile } from "@/redux/slice/ProfileSlice";
+import { storeTokens } from "@/utils/auth";
+import { useAppDispatch } from "@/redux/hook";
+
 
 function Hero() {
     const router = useRouter();
     const words_ = ["Split", "Transfer"];
- 
+    const dispatch = useAppDispatch();
+
 
 
 
@@ -44,24 +49,34 @@ function Hero() {
             });
             userData = await response.json();
 
-            mutation.mutate("userData");
+            mutation.mutate(userData);
+
+            console.log(mutation)
+            if (mutation.isSuccess) {
+
+                storeTokens(mutation.data.data.accessToken);
+
+                console.log("user token", mutation.data.data.accessToken)
 
 
+                dispatch(addProfile(mutation.data.data.user))
+
+            }
             if (mutation.isError) {
-                console.log("error",mutation.error)
+                console.log("error", mutation.error)
+                toast.error(mutation.error.message);
+                return
+            }
+            else {
+                toast.success("Login successful!");
+                router.push("/dashboard");
+
             }
 
 
-            // if (mutation.isError) {
-            //     if (mutation.data && mutation.data.data) {
-            //         toast.error(mutation.data.data);
-            //     }
-            //     return
-            // }
-            toast.success("Login successful!");
+
             // TODO : Dispatch value to redux toolkit
 
-            // router.push("/dashboard");
 
         } catch (error) {
             console.error("Error verifying token:", error);

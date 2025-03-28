@@ -5,6 +5,7 @@ import {
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
+  IconLogout
 } from "@tabler/icons-react";
 // import { Link, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -13,6 +14,8 @@ import Logo from "../Logo";
 import Link from "next/link";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
 import ThemeToggle from "@/components/ThemeToggle"
+import { logout } from "@/utils/auth";
+
 
 
 export function SidebarDemo({ children }) {
@@ -52,6 +55,8 @@ export function SidebarDemo({ children }) {
           </div>
 
           <ThemeToggle />
+
+          <div className="cursor-pointer" onClick={() => logout()}><IconLogout /></div>
 
           <div>{/* <ConnectButton /> */}</div>
         </SidebarBody>

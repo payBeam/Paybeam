@@ -1,80 +1,63 @@
 import React from "react";
-import { Space, Table, Tag } from "antd";
+import { Space, Table, Tag, Spin } from "antd";
 import type { TableProps } from "antd";
+import { useInvoices } from "@/hooks/useInvoice"
+import { formatDistanceToNow } from 'date-fns';
 
 interface DataType {
   key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  title: string;
+  status: string;
+  memo: string;
+  updatedAt: string;
 }
+
 
 const columns: TableProps<DataType>["columns"] = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
+    title: "Title",
+    dataIndex: "title",
+    key: "id",
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "Status",
+    dataIndex: "status",
+    key: "id",
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "Memo",
+    dataIndex: "id",
+    key: "id",
   },
   {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
+    title: "Created",
+    dataIndex: "updatedAt",
+    key: "updatedAt"
   }
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
 
-const Table_: React.FC = () => (
-  <Table<DataType> columns={columns} dataSource={data} />
-);
+const Table_: React.FC = () => {
+
+
+  const { data: invoice, isLoading } = useInvoices();
+  console.log("Invoices", invoice?.data);
+
+
+  const filtered = (invoice?.data || []).map((invoice: any) => ({
+    ...invoice,
+    // updatedAt: formatDistanceToNow(new Date(invoice.updatedAt),
+  // Consider adding { addSuffix: true } for "ago" suffix
+  updatedAt: formatDistanceToNow(new Date(invoice.updatedAt), { addSuffix: true })
+}));
+
+  if (isLoading) {
+    return <div className="flex justify-center h-[100vh] items-center"><Spin /></div>
+  }
+  return <div className="">
+    <Table<DataType> columns={columns} dataSource={filtered} />
+  </div>
+
+}
 
 export default Table_;

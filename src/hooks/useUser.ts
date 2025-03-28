@@ -1,8 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/utils/auth';
-import { addProfile } from "@/redux/slice/ProfileSlice";
-import { storeTokens } from "@/utils/auth";
-import { useAppDispatch } from "@/redux/hook";
+
 
 
 const fetchUser = async () => {
@@ -21,18 +19,11 @@ export const useUser = () => {
 
 export const useCreateUser = () => {
     const queryClient = useQueryClient();
-       const dispatch = useAppDispatch();
 
     return useMutation({
         mutationFn: (newUser: any) =>
-            api.post('/api/auth/google', newUser),
-        onSuccess: (data) => {
-            storeTokens(data.data.accessToken);
-            dispatch(addProfile(data.data.user))
-            // Update cache with new user data
-            queryClient.setQueryData(['user'], data.data.user);
-
-
+            api.post('/api/auth/google', { payload: newUser }),
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['user'] });
         },
         onError: (error) => {
