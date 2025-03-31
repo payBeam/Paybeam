@@ -7,6 +7,7 @@ import Statistics from "./Statistics";
 import Table from "./Table";
 // import { useQueryClient } from '@tanstack/react-query';
 import { useUser } from "@/hooks/useUser";
+import MerchantCreationForm from "./CreateInvoiceModal";
 
 
 const { Search } = Input;
@@ -14,10 +15,17 @@ const { Search } = Input;
 const Explore = () => {
   React.useEffect(() => { }, []);
 
+  const [isFormOpen, setIsFormOpen] = React.useState(false);
+
   //TODO toast error
   const { data: user, isLoading, isError, error } = useUser();
   console.log("user", user?.data?.merchant);
+  
   // console.log("error", error);
+
+  // if (user && isLoading === false && !user?.data?.merchant?.id) {
+  //   setIsFormOpen(true)
+  // }
 
 
   return (
@@ -58,7 +66,12 @@ const Explore = () => {
                 </div>
               ) : (
                 <div>
-                  <div className="flex justify-center h-[100vh] items-center"><Spin /></div>
+                  <div className="flex justify-start h-[100vh] items-start ">
+
+                        {!user?.data?.merchant && (
+                      <MerchantCreationForm onClose={() => setIsFormOpen(false)} />
+                    )}
+                  </div>
 
                 </div>
               )}
