@@ -53,11 +53,11 @@ api.interceptors.response.use(
         }
 
         // Case 2: Other auth-related errors (403, 400, etc.)
-        if ([403, 400].includes(error.response?.status)) {
-            await logout();
-            toast.error("You’ve been logged out due to inactivity.");
-            return Promise.reject(error);
-        }
+        // if ([403, 400].includes(error.response?.status)) {
+        //     await logout();
+        //     toast.error("You’ve been logged out due to inactivity.");
+        //     return Promise.reject(error);
+        // }
 
         // Case 3: Network/server errors (optional)
         if (!error.response) {

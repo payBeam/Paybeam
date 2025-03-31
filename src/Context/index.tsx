@@ -14,6 +14,15 @@ const UserContext = React.createContext<{
     setMerchant: any;
     isCreateModalOpen: any;
     setIsCreateModalOpen: any;
+    openCreateInvoiceModal: any;
+    setOpenCreateInvoiceModal: any;
+    steps: any;
+    setSteps:any;
+    invoice:any;
+    setInvoice:any;
+    memo:any;
+    setMemo:any
+
 }>({
     isModalOpen: undefined,
     setIsModalOpen: undefined,
@@ -21,25 +30,53 @@ const UserContext = React.createContext<{
     setMerchant: undefined,
     isCreateModalOpen: undefined,
     setIsCreateModalOpen: undefined,
+    openCreateInvoiceModal: undefined,
+    setOpenCreateInvoiceModal: undefined,   
+    steps: undefined,
+    setSteps:undefined,
+    invoice: undefined,
+    setInvoice: undefined,
+    memo:undefined,
+    setmemo:undefined    
 
 });
 
 export const useUserContext = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-    const [merchant, setMerchant] = useState({
+    const [openCreateInvoiceModal, setOpenCreateInvoiceModal] = useState(false);
+    const [steps, setSteps] = useState(0);
+    const [memo, setMemo] = useState("")
+     const [merchant, setMerchant] = useState({
         name: "",
         description: "",
         })
 
+    const [invoice, setInvoice] = useState({
+        title: "",
+        description: "",
+        amount:0,
+        tokenType: "USDC"
+    })
+
+
+    
+    
     return {
         isModalOpen,
         setIsModalOpen,
         merchant,
         setMerchant,
         isCreateModalOpen,
-        setIsCreateModalOpen
+        setIsCreateModalOpen,
+        openCreateInvoiceModal,
+        setOpenCreateInvoiceModal,
+        steps,
+        setSteps,
+        invoice,
+        setInvoice,
+        memo, 
+        setMemo
     };
 }; 
 

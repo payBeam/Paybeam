@@ -7,7 +7,9 @@ import Statistics from "./Statistics";
 import Table from "./Table";
 // import { useQueryClient } from '@tanstack/react-query';
 import { useUser } from "@/hooks/useUser";
-import MerchantCreationForm from "./CreateInvoiceModal";
+import MerchantCreationForm from "./CreateMerchant"
+import {useClient} from "@/Context/index"
+import CreateInvoiceModal from "./Form"
 
 
 const { Search } = Input;
@@ -20,20 +22,14 @@ const Explore = () => {
   //TODO toast error
   const { data: user, isLoading, isError, error } = useUser();
   console.log("user", user?.data?.merchant);
-  
-  // console.log("error", error);
 
-  // if (user && isLoading === false && !user?.data?.merchant?.id) {
-  //   setIsFormOpen(true)
-  // }
+  const {openCreateInvoiceModal} = useClient()
 
 
   return (
     <SidebarDemo>
       {isLoading ? (<div className="flex justify-center h-[100vh] items-center"><Spin /></div>
       ) : (
-
-
         <div className="mx-auto px-8 relative">
           <div className="flex pt-3 justify-between items-center  mx-auto ">
             <h2 className="font-extrabold"> payBeam</h2>
@@ -68,8 +64,8 @@ const Explore = () => {
                 <div>
                   <div className="flex justify-start h-[100vh] items-start ">
 
-                        {!user?.data?.merchant && (
-                      <MerchantCreationForm onClose={() => setIsFormOpen(false)} />
+                    {!user?.data?.merchant && (
+                      <MerchantCreationForm />
                     )}
                   </div>
 
@@ -78,6 +74,9 @@ const Explore = () => {
             </div>
           )}
         </div>
+      )}
+      {openCreateInvoiceModal && (
+        <CreateInvoiceModal/>
       )}
     </SidebarDemo>
   );

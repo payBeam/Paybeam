@@ -12,7 +12,7 @@ dayjs.extend(customParseFormat);
 
 const { TextArea } = Input;
 
-const MerchantCreationForm = ({ onClose }) => {
+const MerchantCreationForm = () => {
     const { merchant, setMerchant } = useClient();
     const [loading, setLoading] = useState(false);
     const mutation = useCreateMerchant()
@@ -45,8 +45,8 @@ const MerchantCreationForm = ({ onClose }) => {
             }
             if (mutation.isSuccess) {
                 toast.success('Merchant created successfully');
-                onClose();
-                window.reload()
+                // onClose();
+                window.location.reload()
                 return
             }
             // fetch user again
@@ -98,7 +98,7 @@ const MerchantCreationForm = ({ onClose }) => {
             <div className="flex justify-end space-x-3 p-6 border-t">
                 <Button
                     size="large"
-                    onClick={onClose}
+                    // onClick={onClose}
                     disabled={loading}
                     className="hover:bg-gray-100"
                 >

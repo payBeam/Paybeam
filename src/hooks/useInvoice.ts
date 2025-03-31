@@ -1,4 +1,4 @@
-import { useQuery,  useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/utils/auth';
 
 enum TokenType {
@@ -24,15 +24,21 @@ export const useCreateInvoice = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (newInvoice: { title: string; description: string; tokenType: TokenType; amount:number  }) =>
-            api.post('/api/invoice/create', newInvoice),
+        mutationFn: ({ title, description, tokenType, amount }: {
+            title: string;
+            description: string;
+            tokenType: TokenType;
+            amount: number;
+        }) => api.post("/api/invoice/create", { title, description, tokenType, amount }),
+
         onSuccess: () => {
-            // Invalidate cache to refetch posts
-            queryClient.invalidateQueries({ queryKey: ['invoicea'] });
+            // Invalidate cache to refetch invoices
+            queryClient.invalidateQueries({ queryKey: ["invoices"] });
         },
+
         onError: (error) => {
-            console.error('Failed to create post:', error);
+            console.error("Failed to create invoice:", error);
         },
-    });
+    })
 };
 

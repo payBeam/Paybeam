@@ -44,6 +44,7 @@ export default function RootLayout({
                 },
               }} />
               <ConfigProvider theme={theme}>{children}</ConfigProvider>
+
             </StyledComponentsRegistry>
           </GoogleOAuthProvider>
 
