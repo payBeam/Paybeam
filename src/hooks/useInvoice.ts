@@ -42,3 +42,18 @@ export const useCreateInvoice = () => {
     })
 };
 
+
+
+const fetchInvoiceById = async (id: string) => {
+    const response = await api.get(`/api/invoice-settlement/${id}`);
+    return response.data; // Axios wraps response in `data`
+};
+
+export const useInvoice = (id: string) => {
+    return useQuery({
+        queryKey: ["invoice", id], // Unique cache key per ID
+        queryFn: () => fetchInvoiceById(id),
+        enabled: !!id, // Only run query if `id` exists
+        staleTime: 1000 * 60 * 5, // 5 minutes cache
+    });
+};

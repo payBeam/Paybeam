@@ -93,11 +93,12 @@ function CreateInvoice() {
     };
 
 
-    const handleSubmit = async () => {
-        setLoading(true)
+    const handleSubmit =  () => {
         try {
+            setLoading(true)
             if (+invoice.amount <= 0 || invoice.title.length < 3 || invoice.description < 2) {
                 toast.error("Please filll in all feilds");
+                return
             }
 
             console.log(invoice.amount)
@@ -114,13 +115,15 @@ function CreateInvoice() {
                 setInvoice({
                     ...invoice,
                     title: "",
-                    description: ""
+                    description: "",
+                    amount: 0
                 })
 
             }
         }
         catch (err) {
             toast.error(err.message)
+
         }
         finally {
             setLoading(false)
@@ -191,14 +194,23 @@ function CreateInvoice() {
 function CopyLink() {
 
     const { setOpenCreateInvoiceModal, setSteps, memo, setMemo } = useClient();
-
+    
+    const handleCopy = async () => {
+        try {
+               const link = `${window.location.origin}/pay-invoice/${memo}`;
+            await navigator.clipboard.writeText(link);
+            toast.success("Link copied to clipboard!");
+        } catch (err) {
+            toast.error("Failed to copy:", err);
+        }
+    };
 
     return (<Result
         status="success"
         title="Successfully Created Invoice"
         subTitle={`Memo : ${memo}. customer should use this memo when transferring USDC`}
         extra={[
-            <Button type="primary" key="console">
+            <Button type="primary" key="console" onClick={handleCopy}>
                 share link to customer
             </Button>,
             <Button key="buy" onClick={() => {
