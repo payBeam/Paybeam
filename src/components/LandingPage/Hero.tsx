@@ -15,12 +15,25 @@ import { useCreateUser } from "@/hooks/useUser"
 import { addProfile } from "@/redux/slice/ProfileSlice";
 import { storeTokens } from "@/utils/auth";
 import { useAppDispatch } from "@/redux/hook";
+import { Spin } from "antd";
+
+
+
+const contentStyle: React.CSSProperties = {
+    padding: 50,
+    background: 'rgba(0, 0, 0, 0.05)',
+    borderRadius: 4,
+};
+
+const content = <div style={contentStyle} />;
 
 
 function Hero() {
     const router = useRouter();
     const words_ = ["Split", "Transfer"];
     const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState(false)
+    const [authenticating, setAuthenticating] = useState(false)
 
 
 
@@ -38,6 +51,7 @@ function Hero() {
     const mutation = useCreateUser();
 
     const handleSuccess = async (codeResponse: any) => {
+        setAuthenticating(true)
 
         try {
             if (!codeResponse || (!codeResponse.access_token)) {
@@ -49,38 +63,25 @@ function Hero() {
             });
             userData = await response.json();
 
-            mutation.mutate(userData);
+            const result = await mutation.mutateAsync(userData);
 
-            console.log(mutation)
-            if (mutation.isSuccess) {
+            console.log(result)
+            if (result) {
 
-                storeTokens(mutation.data.data.accessToken);
-
-                console.log("user token", mutation.data.data.accessToken)
-
-
-                dispatch(addProfile(mutation.data.data.user))
-
-            }
-            if (mutation.isError) {
-                console.log("error", mutation.error)
-                toast.error(mutation.error.message);
-                return
-            }
-            else {
+                storeTokens(result.data.data.accessToken);
+                console.log("user token", result.data.data.accessToken)
+                dispatch(addProfile(result.data.data.user))
                 toast.success("Login successful!");
                 router.push("/dashboard");
-
             }
-
-
-
-            // TODO : Dispatch value to redux toolkit
 
 
         } catch (error) {
             console.error("Error verifying token:", error);
             toast.error(error.message);
+        } finally {
+            setLoading(false)
+            setAuthenticating(false)
         }
     };
 
@@ -94,7 +95,12 @@ function Hero() {
     //"Unleash Your Meme Power: Battle, Engage, and Win Big in the Ultimate Meme War Arena!"
     // const { View } = useLottie(options);
     return (
-        <section className="">
+        <section className="relative">
+            {authenticating && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <Spin size="large" tip="Loading..." />
+                </div>
+            )}
             <BackgroundBeams />
 
             <div className="container mx-auto">
@@ -134,16 +140,26 @@ function Hero() {
                                 Join Waitlist
                                 <IoIosArrowDroprightCircle className="text-2xl lg:text-3xl" />
                             </button> */}
-                            <button
-                                className="btn dark:bg-transparent  gap-x-2 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
-                                data-aos="fade-down"
-                                data-aos-delay="700"
-                                onClick={() => login()}
-                            // onClick={() => handleSuccess({ code: "ghghghg" })}
-                            >
-                                Continue with
-                                <FcGoogle className="text-2xl lg:text-3xl bg-white rounded-full dark:bg-transparent" />
-                            </button>
+                            {loading ? (<Spin size="large" />
+
+                            ) : (
+
+                                <button
+                                    className="btn dark:bg-transparent  gap-x-2 pl-6 text-sm lg:h-16 my-6 lg:text-base z-50"
+                                    data-aos="fade-down"
+                                    data-aos-delay="700"
+                                    onClick={() => {
+                                        login()
+                                        setLoading(true)
+                                    }}
+                                // onClick={() => handleSuccess({ code: "ghghghg" })}
+                                >
+
+                                    Continue with
+                                    <FcGoogle className="text-2xl lg:text-3xl bg-white rounded-full dark:bg-transparent" />
+
+                                </button>
+                            )}
 
 
                         </div>
