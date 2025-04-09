@@ -10,9 +10,11 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Providers from "./providers"
 
 
-const inter = Inter({ subsets: ["latin"] });
-
-
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  fallback: ['system-ui', 'arial'], // Fallback fonts
+})
 export const metadata: Metadata = {
   title: "payBeam",
   description: "A seamless platform to automate, split, and manage payments with security and transparency.",
