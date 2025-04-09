@@ -5,11 +5,9 @@ import StyledComponentsRegistry from "./providers/AntdRegistry";
 import { ConfigProvider } from "antd";
 import theme from "../styles/theme";
 import "./globals.css";
-import "@/styles/nprogress.css";
 import { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Providers from "./providers"
-
 
 const inter = Inter({
   subsets: ['latin'],
