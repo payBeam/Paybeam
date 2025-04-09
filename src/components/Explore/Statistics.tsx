@@ -3,6 +3,7 @@ import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic, Button } from 'antd';
 import ConnectWallet from "@/components/ConnectComponent"
 import { useClient } from "@/Context/index";
+import { useBalance } from '@/hooks/useInvoice';
 
 const App: React.FC = () => {
   const {
@@ -13,6 +14,9 @@ const App: React.FC = () => {
     setOpenCreateInvoiceModal((prev: boolean) => !prev);
   };
 
+  const { data, error } = useBalance()
+  console.log("balance---", data?.data)
+
 
   return (
     <Row gutter={16}>
@@ -20,7 +24,7 @@ const App: React.FC = () => {
         <Card bordered={false}>
           <Statistic
             title="Today"
-            value={1.28}
+            value={0.00}
             precision={2}
             valueStyle={{ color: "#3f8600" }}
             prefix={<ArrowUpOutlined />}
@@ -32,7 +36,7 @@ const App: React.FC = () => {
         <Card bordered={false}>
           <Statistic
             title="Yesterday"
-            value={9.3}
+            value={0.00}
             precision={2}
             valueStyle={{ color: "#cf1322" }}
             prefix={<ArrowDownOutlined />}
@@ -41,11 +45,11 @@ const App: React.FC = () => {
         </Card>
       </Col>
       <Col span={12}>
-        <Statistic title="Account Balance (USDC)" value={200000} precision={2} />
+        <Statistic title="Unsettled Balance (USDC)" value={data?.data} precision={2} />
         <ConnectWallet title={"Connect Wallet"} />
       </Col>
       <Col span={12} >
-        <Statistic title="Active Users" value={112893} loading />
+        <Statistic title="Active Users" value={1} loading />
         <Button
           style={{ marginTop: 24 }}
           size="large" onClick={handleOpenInvoiceModal}> Create Invoice </Button>

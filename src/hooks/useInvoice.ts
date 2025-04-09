@@ -57,3 +57,19 @@ export const useInvoice = (id: string) => {
         staleTime: 1000 * 60 * 5, // 5 minutes cache
     });
 };
+
+
+
+const fetchBalance = async () => {
+    const response = await api.get(`/api/invoice/balance`);
+    return response.data; // Axios wraps response in `data`
+};
+
+export const useBalance = () => {
+    return useQuery({
+        queryKey: ["balance"], // Unique cache key per ID
+        queryFn: () => fetchBalance(),
+        // enabled: !!id, // Only run query if `id` exists
+        staleTime: 1000 * 60 * 5, // 5 minutes cache
+    });
+};

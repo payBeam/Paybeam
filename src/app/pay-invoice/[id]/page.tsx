@@ -28,6 +28,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     setVisible(false);
   };
 
+  
   if (!memo) {
     return (
       <div className="flex justify-center items-center h-screen">

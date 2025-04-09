@@ -37,7 +37,7 @@ const UserContext = React.createContext<{
     invoice: undefined,
     setInvoice: undefined,
     memo:undefined,
-    setmemo:undefined    
+    setMemo:undefined    
 
 });
 
