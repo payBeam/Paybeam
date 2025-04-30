@@ -1,8 +1,8 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import StyledComponentsRegistry from "./providers/AntdRegistry";
-import { ConfigProvider } from "antd";
+import AntdProvider from "./providers/AntdRegistry";
+// import { ConfigProvider } from "antd";
 import theme from "../styles/theme";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
@@ -32,7 +32,7 @@ export default function RootLayout({
         <Providers>
 
           <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID} >
-            <StyledComponentsRegistry>
+            <AntdProvider>
               <Toaster toastOptions={{
                 className: "",
                 style: {
@@ -44,9 +44,9 @@ export default function RootLayout({
                   fontFamily: "Arial, sans-serif",
                 },
               }} />
-              <ConfigProvider theme={theme}>{children}</ConfigProvider>
+           {children}
 
-            </StyledComponentsRegistry>
+            </AntdProvider>
           </GoogleOAuthProvider>
 
         </Providers>

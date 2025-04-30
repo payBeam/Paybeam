@@ -2,23 +2,28 @@
 "use client";
 
 import React from "react";
-import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
-import type Entity from "@ant-design/cssinjs/es/Cache";
-import { useServerInsertedHTML } from "next/navigation";
+// import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
+// import type Entity from "@ant-design/cssinjs/es/Cache";
+// import { useServerInsertedHTML } from "next/navigation";
+import { ConfigProvider, theme as antdTheme } from "antd";
+import { useClient } from "@/Context/index";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
-const StyledComponentsRegistry = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const cache = React.useMemo<Entity>(() => createCache(), []);
-  useServerInsertedHTML(() => (
-    <style
-      id="antd"
-      dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }}
-    />
-  ));
-  return <StyleProvider cache={cache}>{children}</StyleProvider>;
-};
+function AntdProvider({ children }: { children: React.ReactNode }) {
+  const { darkAlgorithm, defaultAlgorithm } = antdTheme;
+  const { isDarkMode } = useClient();
 
-export default StyledComponentsRegistry;
+  return (
+    <AntdRegistry>
+      <ConfigProvider
+        theme={{
+          algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+        }}
+      >
+        {children}
+      </ConfigProvider>
+    </AntdRegistry>
+  );
+}
+
+export default AntdProvider;

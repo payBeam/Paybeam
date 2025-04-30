@@ -21,25 +21,12 @@ const UserContext = React.createContext<{
     invoice:any;
     setInvoice:any;
     memo:any;
-    setMemo:any
+    setMemo:any;
+    isDarkMode: boolean;
+    setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+    
 
-}>({
-    isModalOpen: undefined,
-    setIsModalOpen: undefined,
-    merchant: undefined,
-    setMerchant: undefined,
-    isCreateModalOpen: undefined,
-    setIsCreateModalOpen: undefined,
-    openCreateInvoiceModal: undefined,
-    setOpenCreateInvoiceModal: undefined,   
-    steps: undefined,
-    setSteps:undefined,
-    invoice: undefined,
-    setInvoice: undefined,
-    memo:undefined,
-    setMemo:undefined    
-
-});
+}>(undefined);
 
 export const useUserContext = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,6 +45,7 @@ export const useUserContext = () => {
         amount:0,
         tokenType: "USDC"
     })
+     const [isDarkMode, setIsDarkMode] = useState(false);
 
 
     
@@ -76,7 +64,9 @@ export const useUserContext = () => {
         invoice,
         setInvoice,
         memo, 
-        setMemo
+        setMemo,
+            isDarkMode,
+        setIsDarkMode,
     };
 }; 
 
