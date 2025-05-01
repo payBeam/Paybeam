@@ -1,51 +1,19 @@
-"use client"
-import React, { useState, useEffect } from "react";
+"use client";
+
+import React from "react";
 import { Button, Typography, Space } from "antd";
-import { getPublicKey, connect, disconnect } from "../stellar-wallets-kit";
+import { useWalletKit } from "@/hooks/useStellarWaletKit";
 
 const { Text } = Typography;
 
-interface ConnectWalletProps {
-  title: string;
-}
+const ConnectButton: React.FC = () => {
+  const {
+    publicKey,
+    connect,
+    disconnect,
+  } = useWalletKit();
 
-const ConnectComponent: React.FC<ConnectWalletProps> = ({title = "Sign and Pay"}) => {
-  const [publicKey, setPublicKey] = useState<string | null>(null);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-
-  // Check if the user is already connected on component mount
-  useEffect(() => {
-    const checkConnection = async () => {
-      const key = await getPublicKey();
-      if (key) {
-        setPublicKey(key);
-        setIsConnected(true);
-      } else {
-        setIsConnected(false);
-      }
-    };
-
-    checkConnection();
-  }, []);
-
-  // Handle connect button click
-  const handleConnect = async () => {
-    await connect(async () => {
-      const key = await getPublicKey();
-      if (key) {
-        setPublicKey(key);
-        setIsConnected(true);
-      }
-    });
-  };
-
-  // Handle disconnect button click
-  const handleDisconnect = async () => {
-    await disconnect(async () => {
-      setPublicKey(null);
-      setIsConnected(false);
-    });
-  };
+  const isConnected = !!publicKey;
 
   return (
     <Space
@@ -57,26 +25,23 @@ const ConnectComponent: React.FC<ConnectWalletProps> = ({title = "Sign and Pay"}
         ellipsis={{ tooltip: publicKey ?? "" }}
         style={{ maxWidth: "18em", display: "block" }}
       >
-        {isConnected ? `Signed in as ${publicKey}` : ""}
+        {isConnected ? `${publicKey.slice(0,10)}...` : ""}
       </Text>
+
       <Space>
-        <Button
-          type="primary"
-          onClick={handleConnect}
-          style={{ display: isConnected ? "none" : "inline-block" }}
-        >
-          {title}
-        </Button>
-        <Button
-          danger
-          onClick={handleDisconnect}
-          style={{ display: isConnected ? "inline-block" : "none" }}
-        >
-          Disconnect
-        </Button>
+        {!isConnected && (
+          <Button type="primary" onClick={connect}>
+            Connect Wallet
+          </Button>
+        )}
+        {isConnected && (
+          <Button danger onClick={disconnect}>
+            Disconnect
+          </Button>
+        )}
       </Space>
     </Space>
   );
 };
 
-export default ConnectComponent;
+export default ConnectButton;

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/hooks/useRouterWithProgress";
 import Navbar from "../Navbar/Nav2";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { FlipWords } from "@/components/ui/flip-words";
@@ -72,7 +72,7 @@ function Hero() {
                 console.log("user token", result.data.data.accessToken)
                 dispatch(addProfile(result.data.data.user))
                 toast.success("Login successful!");
-                router.push("/dashboard");
+                router("/dashboard");
             }
 
 

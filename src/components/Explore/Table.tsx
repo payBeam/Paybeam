@@ -48,9 +48,10 @@ const Table_: React.FC = () => {
     ...invoice,
     // updatedAt: formatDistanceToNow(new Date(invoice.updatedAt),
   // Consider adding { addSuffix: true } for "ago" suffix
-  id:invoice.id.split(0,5),
+  id:invoice.id.slice(0,5),
   updatedAt: formatDistanceToNow(new Date(invoice.updatedAt), { addSuffix: true })
 }));
+
 
   if (isLoading) {
     return <div className="flex justify-center h-[100vh] items-center"><Spin /></div>

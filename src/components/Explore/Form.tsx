@@ -93,33 +93,35 @@ function CreateInvoice() {
     };
 
 
-    const handleSubmit =  () => {
+    const handleSubmit =  async() => {
         try {
-            setLoading(true)
+              if (loading) return;
+                setLoading(true);
+
             if (+invoice.amount <= 0 || invoice.title.length < 3 || invoice.description < 2) {
                 toast.error("Please filll in all feilds");
                 return
             }
-
+            
+            setLoading(true)
             console.log(invoice.amount)
-            mutation.mutate({...invoice, amount: +invoice.amount})
-
-            if (mutation.isError) {
-                toast.error(mutation.error.message)
-                return
-            }
-            else if (mutation.isSuccess) {
-                console.log("invoice", mutation.data.data.data.id)
-                setMemo(mutation.data.data.data.id)
-                setSteps(1)
+          await  mutation.mutateAsync({...invoice, amount: +invoice.amount}, {
+            onSuccess: (data) => {
+                console.log("invoice", data.data.data.id);
+                setMemo(data.data.data.id);
+                setSteps(1);
                 setInvoice({
-                    ...invoice,
                     title: "",
                     description: "",
                     amount: 0
-                })
-
+                });
+            },
+            onError: (error) => {
+                toast.error(error.message);
             }
+        })
+
+
         }
         catch (err) {
             toast.error(err.message)
@@ -133,7 +135,7 @@ function CreateInvoice() {
     return (
         <div className="w-[100%] md:w-[70%] mx-5"> <div className="flex justify-between space-x-2 items-center w-[100%]">
             <div className="flex flex-col   space-y-3 w-full">
-                <p>Title</p>x
+                <p>Title</p>
                 <Input
                     name="title"
                     type="text"
@@ -173,6 +175,7 @@ function CreateInvoice() {
                     size="small"
                     onClick={() => setOpenCreateInvoiceModal(false)}
                     disabled={loading}
+                   
                     className="hover:bg-gray-100"
                 >
                     Cancel
@@ -181,6 +184,7 @@ function CreateInvoice() {
                     type="primary"
                     size="small"
                     loading={loading}
+                    disabled={loading}
                     onClick={handleSubmit}
                     className="bg-blue-600 hover:bg-blue-700"
                 >

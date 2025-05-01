@@ -46,7 +46,7 @@ const App: React.FC = () => {
       </Col>
       <Col span={12}>
         <Statistic title="Unsettled Balance (USDC)" value={data?.data} precision={2} />
-        <ConnectWallet title={"Connect Wallet"} />
+        <ConnectWallet  />
       </Col>
       <Col span={12} >
         <Statistic title="Active Users" value={1} loading />

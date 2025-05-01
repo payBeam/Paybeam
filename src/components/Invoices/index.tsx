@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Modal, Button, Descriptions, message } from 'antd';
 // import { DollarOutlined } from '@ant-design/icons';
 import { SidebarDemo } from "@/components/Sidebar";
-import ConnectWallet from "@/components/ConnectComponent"
+// import ConnectWallet from "@/components/ConnectComponent"
 
 
 const InvoicePage = () => {
@@ -154,19 +154,7 @@ const invoices = [
           open={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           footer={[
-            // <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-            //   Close
-            // </Button>,
-            // <Button
-            //   key="pay"
-            //   type="primary"
-            //   icon={<DollarOutlined />}
-            //   onClick={handleSignAndPay}
-            //   disabled={selectedInvoice?.status === "Paid"}
-            // >
-            //   Sign and Pay
-            // </Button>
-            <ConnectWallet title={'Connect and Pay'}/>
+            // <ConnectWallet title={'Connect and Pay'}/>
           ]}
         >
           {selectedInvoice && (

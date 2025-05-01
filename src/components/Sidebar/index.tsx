@@ -22,7 +22,7 @@ export function SidebarDemo({ children }) {
   const links = [
     {
       label: "Explore",
-      href: "/",
+      href: "/dashboard",
       icon: (
         <IconBrandTabler className="text-neutral-200 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
