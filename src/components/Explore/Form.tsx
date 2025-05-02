@@ -8,6 +8,8 @@ import { useClient } from "@/Context/index";
 import { Button, Steps, Result } from 'antd';
 import { IoCloseSharp } from "react-icons/io5";
 import { useCreateInvoice } from "@/hooks/useInvoice";
+import { useWalletKit } from "@/hooks/useStellarWaletKit";
+
 
 
 dayjs.extend(customParseFormat);
@@ -86,33 +88,67 @@ function Screens({ steps }: { steps: number }) {
 function CreateInvoice() {
     const { invoice, setInvoice, setOpenCreateInvoiceModal, setSteps, setMemo } = useClient();
     const [loading, setLoading] = useState(false);
+    const { connect, publicKey, signTransaction} = useWalletKit();
 
     const mutation = useCreateInvoice()
+    // const prepareTransaction = useCreateInvoice()
+
     const handleInputChange = (e: any) => {
         setInvoice({ ...invoice, [e.target.name]: e.target.value });
     };
-
 
     const handleSubmit =  async() => {
         try {
               if (loading) return;
                 setLoading(true);
 
-            if (+invoice.amount <= 0 || invoice.title.length < 3 || invoice.description < 2) {
-                toast.error("Please filll in all feilds");
+            if (+invoice.amount <= 0) {
+                toast.error("Please put an amount");
                 return
             }
             
             setLoading(true)
             console.log(invoice.amount)
-          await  mutation.mutateAsync({...invoice, amount: +invoice.amount}, {
-            onSuccess: (data) => {
-                console.log("invoice", data.data.data.id);
-                setMemo(data.data.data.id);
+        //request the public key of the merchant
+        if (!publicKey) {
+            await connect()
+        }
+        
+        //send the public key and invoice data to the backend to prepare the transaction
+        // await prepareTransaction.mutateAsync({})
+        await  mutation.mutateAsync({...invoice, amount: +invoice.amount, publicKey}, {
+            onSuccess: async (data) => {
+                // get the xrp from the response, and sign the transaction with it 
+                const signedXdr = await signTransaction(data.data.data.xdr.xdr);
+                
+                console.log("signedXdr",signedXdr)
+                // if successfull, now create the invoice within paybeam
+                const sendtoxlm = async () => {
+                    const txRes = await fetch('https://soroban-testnet.stellar.org', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        id: 1,
+                        method: 'sendTransaction',
+                        params: {transaction:signedXdr.signedTxXdr},
+                    }), 
+                });
+                
+                const result = await txRes.json();
+                console.log('Transaction result:', result);
+            }
+
+           await sendtoxlm();
+
+
+                console.log("invoice", data.data.data.invoice.id);
+                setMemo(data.data.data.invoice.id);
                 setSteps(1);
                 setInvoice({
                     title: "",
                     description: "",
+                    tokenType: "USDC",
                     amount: 0
                 });
             },
@@ -135,29 +171,18 @@ function CreateInvoice() {
     return (
         <div className="w-[100%] md:w-[70%] mx-5"> <div className="flex justify-between space-x-2 items-center w-[100%]">
             <div className="flex flex-col   space-y-3 w-full">
-                <p>Title</p>
+                <p>Description (optional)</p>
                 <Input
-                    name="title"
+                    name="description"
                     type="text"
                     size="large"
-                    value={invoice.title}
+                    value={invoice.description}
                     onChange={handleInputChange}
                 />
             </div>
 
 
         </div>
-
-            <div className="flex flex-col  space-y-3 w-[100%]">
-                <p>Description</p>
-                <TextArea
-                    // ref={inputRef}
-                    name="description"
-                    autoSize={{ minRows: 4, maxRows: 8 }}
-                    value={invoice.description}
-                    onChange={handleInputChange}
-                />
-            </div>
 
             <div className="flex flex-col  space-y-3 w-[100%]">
                 <p>amount</p>

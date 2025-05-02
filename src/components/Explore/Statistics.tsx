@@ -15,7 +15,7 @@ const App: React.FC = () => {
   };
 
   const { data, error } = useBalance()
-  console.log("balance---", data?.data)
+  // console.log("balance---", data?.data)
 
 
   return (

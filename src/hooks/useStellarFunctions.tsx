@@ -6,31 +6,30 @@ enum TokenType {
     XLM = "XLM"
 }
 
-const fetchInvoices = async () => {
-    const response = await api.get('/api/invoice');
-    return response.data; // Axios wraps response in `data`
-};
+// const fetchInvoices = async () => {
+//     const response = await api.get('/api/invoice');
+//     return response.data; // Axios wraps response in `data`
+// };
 
-export const useInvoices = () => {
-    return useQuery({
-        queryKey: ['invoice'], // Unique cache key
-        queryFn: fetchInvoices,
-        staleTime: 1000 * 60 * 5, // 5 minutes until stale
-    });
-};
+// export const useInvoices = () => {
+//     return useQuery({
+//         queryKey: ['invoice'], // Unique cache key
+//         queryFn: fetchInvoices,
+//         staleTime: 1000 * 60 * 5, // 5 minutes until stale
+//     });
+// };
 
 
-export const useCreateInvoice = () => {
+export const usePrepareTx = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ title, description, tokenType, amount, publicKey }: {
+        mutationFn: ({ title, description, tokenType, amount }: {
             title: string;
             description: string;
             tokenType: TokenType;
             amount: number;
-            publicKey: string
-        }) => api.post("/api/invoice/create", { title, description, tokenType, amount, publicKey }),
+        }) => api.post("/api/invoice/create", { title, description, tokenType, amount }),
 
         onSuccess: () => {
             // Invalidate cache to refetch invoices

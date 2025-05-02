@@ -21,7 +21,7 @@ const Explore = () => {
 
   //TODO toast error
   const { data: user, isLoading, isError, error } = useUser();
-  console.log("user", user?.data?.merchant);
+  // console.log("user", user?.data?.merchant);
 
   const {openCreateInvoiceModal} = useClient()
 
