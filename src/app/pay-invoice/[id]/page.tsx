@@ -86,7 +86,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
           onError: (error) => {
             console.error("Failed to pay invoice:", error);
             if (error instanceof AxiosError && error.response?.data?.data) {
-              toast.error(error.response.data.data);
+              toast.error("error occured when paying, make sure you have added USDC as a trustline to your address");
             } else {
               toast.error("An unknown error occurred");
             }
