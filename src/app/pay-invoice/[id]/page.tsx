@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useInvoice } from '@/hooks/useInvoice';
-import { Spin, Result, Button, Card, Descriptions, Typography } from 'antd';
+import { Spin, Result, Button, Card, Descriptions, Typography, Input } from 'antd';
 import { AxiosError } from 'axios';
 import { useWalletKit } from "@/hooks/useStellarWaletKit";
 import {usePreparePayTx, usePrepApproveContract} from "@/hooks/useStellarFunctions";
@@ -16,6 +16,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   const [memo, setMemo] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState(0)
   
 
       const { connect, publicKey, signTransaction} = useWalletKit();
@@ -48,6 +49,10 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
         if (loading) return;
         setLoading(true);
 
+        if(+amount <=0) {
+            toast.error("Please put an amount");
+                          return
+        }
         console.log(publicKey)
 
         if(!publicKey) {
@@ -58,7 +63,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
 
     
 
-  await mutation.mutateAsync({invoiceId:invoice?.data?.id, publicKey, amount:invoice?.data?.amount }, {
+  await mutation.mutateAsync({invoiceId:invoice?.data?.id, publicKey, amount }, {
     onSuccess: async (data) => {
             // console.log("data", data);
               const signedXdr = await signTransaction(data.data.data.xdr);
@@ -196,6 +201,18 @@ if(publicKey) {
                 {invoice.data.tokenType}
               </Descriptions.Item>
             </Descriptions>
+
+            <div className="flex flex-col   space-y-3 w-full">
+                          <p>Amount  (USDC)</p>
+                          <Input
+                              name="amount"
+                              type="number"
+                              size="large"
+                              placeholder="amount is USDC"
+                              value={amount}
+                              onChange={(e) => setAmount(e.target.value)}
+                          />
+                      </div>
 
             <div className="flex justify-center mt-8">
               <Button
