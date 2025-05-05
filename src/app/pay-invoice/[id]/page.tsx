@@ -186,9 +186,6 @@ if(publicKey) {
         {invoice?.data ? (
           <div className="space-y-6">
             <Descriptions bordered column={1}>
-              <Descriptions.Item label="Title">
-                <Text strong>{invoice.data?.title}</Text>
-              </Descriptions.Item>
               <Descriptions.Item label="Description">
                 {invoice.data?.description || 'N/A'}
               </Descriptions.Item>
