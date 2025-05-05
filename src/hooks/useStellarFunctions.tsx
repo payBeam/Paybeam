@@ -20,16 +20,14 @@ enum TokenType {
 // };
 
 
-export const usePrepareTx = () => {
+export const usePrepApproveContract = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ title, description, tokenType, amount }: {
-            title: string;
-            description: string;
-            tokenType: TokenType;
+        mutationFn: ({ publicKey, amount }: {
+            publicKey: string;
             amount: number;
-        }) => api.post("/api/invoice/create", { title, description, tokenType, amount }),
+        }) => api.post("/api/invoice-settlement/create-trustline", { publicKey, amount }),
 
         onSuccess: () => {
             // Invalidate cache to refetch invoices
@@ -42,6 +40,26 @@ export const usePrepareTx = () => {
     })
 };
 
+export const usePreparePayTx = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ invoiceId, publicKey, amount }: {
+            invoiceId: string;
+            publicKey: string;
+            amount: number;
+        }) => api.post("/api/invoice-settlement/pay", { invoiceId, publicKey, amount }),
+
+        onSuccess: () => {
+            // Invalidate cache to refetch invoices
+            queryClient.invalidateQueries({ queryKey: ["invoices"] });
+        },
+
+        onError: (error) => {
+            console.error("Failed to create invoice:", error);
+        },
+    })
+};
 
 
 const fetchInvoiceById = async (id: string) => {

@@ -1,9 +1,13 @@
 "use client";
-
 import React, { useEffect, useState } from 'react';
 import { useInvoice } from '@/hooks/useInvoice';
 import { Spin, Result, Button, Card, Descriptions, Typography } from 'antd';
 import { AxiosError } from 'axios';
+import { useWalletKit } from "@/hooks/useStellarWaletKit";
+import {usePreparePayTx, usePrepApproveContract} from "@/hooks/useStellarFunctions";
+import toast from "react-hot-toast";
+
+
 import PayInvoice from "@/components/PayInvoice";
 
 const { Title, Text } = Typography;
@@ -11,6 +15,15 @@ const { Title, Text } = Typography;
 function Page({ params }: { params: Promise<{ id: string }> }) {
   const [memo, setMemo] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  
+
+      const { connect, publicKey, signTransaction} = useWalletKit();
+      const mutation = usePreparePayTx()
+      const trustline = usePrepApproveContract()
+  
+
+
 
   useEffect(() => {
     params.then((resolvedParams) => {
@@ -28,6 +41,113 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     setVisible(false);
   };
 
+    const handlePayInvoice = async() => {
+    try {
+      if(invoice) {
+
+        if (loading) return;
+        setLoading(true);
+
+        console.log(publicKey)
+
+        if(!publicKey) {
+          await connect();
+        }
+
+            const pay = async() => {
+
+    
+
+  await mutation.mutateAsync({invoiceId:invoice?.data?.id, publicKey, amount:invoice?.data?.amount }, {
+    onSuccess: async (data) => {
+            // console.log("data", data);
+              const signedXdr = await signTransaction(data.data.data.xdr);
+
+
+               const sendtoxlm = async () => {
+                    const txRes = await fetch('https://soroban-testnet.stellar.org', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        id: 1,
+                        method: 'sendTransaction',
+                        params: {transaction:signedXdr.signedTxXdr},
+                    }), 
+                });
+                
+                const result = await txRes.json();
+                console.log('Transaction result:', result);
+                toast.success("successfully paid invoice")
+            }
+
+           await sendtoxlm();
+          },
+          onError: (error) => {
+            console.error("Failed to pay invoice:", error);
+            if (error instanceof AxiosError && error.response?.data?.data) {
+              toast.error(error.response.data.data);
+            } else {
+              toast.error("An unknown error occurred");
+            }
+
+          }
+        })
+
+        }
+               
+        
+if(publicKey) {
+                               await pay()
+
+
+  
+  // await trustline.mutateAsync({ publicKey, amount:invoice?.data?.amount }, {
+  //   onSuccess: async (data) => {
+  //           console.log(data.data.data.xdr);
+  //            const signedXdr = await signTransaction(data.data.data.xdr);
+  //               const sendtoxlm = async () => {
+  //                                const txRes = await fetch('https://soroban-testnet.stellar.org', {
+  //                                method: 'POST',
+  //                                headers: { 'Content-Type': 'application/json' },
+  //                                body: JSON.stringify({
+  //                                    jsonrpc: '2.0',
+  //                                    id: 1,
+  //                                    method: 'sendTransaction',
+  //                                    params: {transaction:signedXdr.signedTxXdr},
+  //                                }), 
+  //                            });
+                             
+  //                            const result = await txRes.json();
+  //                            console.log('Approve contract result:', result);
+  //                            toast.success("Contract approved successfully")
+  //                            await pay()
+  //                        }
+             
+  //                       await sendtoxlm();
+
+  //         },
+  //         onError: (error) => {
+  //           console.error("Failed to pay invoice:", error);
+  //           toast.error("Failed to pay invoice");
+
+  //         }
+  //       })
+        
+        
+      
+
+        
+        
+      }
+    }
+    }catch (err) {
+      console.log(err)
+    } finally {
+   setLoading(false)
+      
+    }
+  }
   
   if (!memo) {
     return (
@@ -67,10 +187,10 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
           <div className="space-y-6">
             <Descriptions bordered column={1}>
               <Descriptions.Item label="Title">
-                <Text strong>{invoice.data.title}</Text>
+                <Text strong>{invoice.data?.title}</Text>
               </Descriptions.Item>
               <Descriptions.Item label="Description">
-                {invoice.data.description || 'N/A'}
+                {invoice.data?.description || 'N/A'}
               </Descriptions.Item>
               <Descriptions.Item label="Amount">
                 {invoice.data.amount}
@@ -84,7 +204,9 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               <Button
                 type="primary"
                 size="large"
-                onClick={openModal}
+                loading={loading}
+                disabled={loading}
+                onClick={handlePayInvoice}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 Pay Now
@@ -104,3 +226,34 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
 }
 
 export default Page;
+
+
+
+
+/* 
+export async function waitForConfirmationWithProgress(
+  txHash: string,
+  onProgress?: (status: string, ledger?: number) => void,
+  options: { timeout?: number; interval?: number } = {}
+) {
+  const { timeout = 60, interval = 2000 } = options;
+  let lastLedger: number | undefined;
+
+  return waitForConfirmation(txHash, {
+    ...options,
+    interval: async (resolve, reject, timeRemaining) => {
+      try {
+        const ledger = await rpcServer.getLatestLedger();
+        if (ledger.sequence !== lastLedger) {
+          lastLedger = ledger.sequence;
+          onProgress?.(`Waiting for confirmation... (current ledger: ${ledger.sequence})`, ledger.sequence);
+        }
+      } catch (e) {
+        // Don't fail progress updates
+      }
+      await new Promise(r => setTimeout(r, interval));
+    }
+  });
+}
+
+*/

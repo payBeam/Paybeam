@@ -113,13 +113,14 @@ function CreateInvoice() {
         if (!publicKey) {
             await connect()
         }
+
         
         //send the public key and invoice data to the backend to prepare the transaction
         // await prepareTransaction.mutateAsync({})
         await  mutation.mutateAsync({...invoice, amount: +invoice.amount, publicKey}, {
             onSuccess: async (data) => {
                 // get the xrp from the response, and sign the transaction with it 
-                const signedXdr = await signTransaction(data.data.data.xdr.xdr);
+                 const signedXdr = await signTransaction(data.data.data.xdr.xdr);
                 
                 console.log("signedXdr",signedXdr)
                 // if successfull, now create the invoice within paybeam
