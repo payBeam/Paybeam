@@ -210,7 +210,7 @@ if(publicKey) {
                               size="large"
                               placeholder="amount is USDC"
                               value={amount}
-                              onChange={(e) => setAmount(e.target.value)}
+                              onChange={(e) => setAmount(+e.target.value)}
                           />
                       </div>
 
