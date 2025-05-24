@@ -2,18 +2,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AntdProvider from "./providers/AntdRegistry";
-// import { ConfigProvider } from "antd";
 import theme from "../styles/theme";
-import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Providers from "./providers"
+import "./font.css";
+import "./globals.css";
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['system-ui', 'arial'], // Fallback fonts
-})
+
 export const metadata: Metadata = {
   title: "payBeam",
   description: "A seamless platform to automate, split, and manage payments with security and transparency.",
@@ -28,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <Providers>
 
           <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID} >

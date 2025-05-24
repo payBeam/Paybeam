@@ -12,20 +12,9 @@ module.exports = {
   		padding: '2rem'
   	},
   	extend: {
-  		fontFamily: {
-  			sans: [
-  				'Poppins',
-  				'sans-serif'
-  			],
-  			serif: [
-  				'Merriweather',
-  				'serif'
-  			],
-  			mono: [
-  				'Menlo',
-  				'monospace'
-  			]
-  		},
+		fontFamily: {
+			sans: ['"Winky Rough"', "sans-serif"],
+		  },
   		colors: {
 				electricBlue: {
 					DEFAULT: "#007BFF",
