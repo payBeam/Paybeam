@@ -1,28 +1,40 @@
-import React from "react";
-import { Space, Table, Tag, Spin } from "antd";
+import { useInvoices } from "@/hooks/useInvoice";
 import type { TableProps } from "antd";
-import { useInvoices } from "@/hooks/useInvoice"
-import { formatDistanceToNow } from 'date-fns';
+import { Spin, Table, Tag } from "antd";
+import { formatDistanceToNow } from "date-fns";
+import React from "react";
 
 interface DataType {
   key: string;
-  title: string;
+  desc: string;
   status: string;
   memo: string;
   updatedAt: string;
 }
 
-
 const columns: TableProps<DataType>["columns"] = [
   {
-    title: "Title",
-    dataIndex: "title",
+    title: "Desc",
+    dataIndex: "description",
     key: "id",
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "id",
+    render: (status: string) => {
+      let color = "green";
+      if (status === "Pending") {
+        color = "orange";
+      } else if (status === "Failed") {
+        color = "red";
+      }
+      return (
+        <Tag color={color} key={status}>
+          {status.toUpperCase()}
+        </Tag>
+      );
+    },
   },
   {
     title: "Memo",
@@ -32,34 +44,34 @@ const columns: TableProps<DataType>["columns"] = [
   {
     title: "Created",
     dataIndex: "updatedAt",
-    key: "updatedAt"
-  }
+    key: "updatedAt",
+  },
 ];
 
-
 const Table_: React.FC = () => {
-
-
   const { data: invoice, isLoading } = useInvoices();
   // console.log("Invoices", invoice?.data);
 
-
   const filtered = (invoice?.data || []).map((invoice: any) => ({
     ...invoice,
-    // updatedAt: formatDistanceToNow(new Date(invoice.updatedAt),
-  // Consider adding { addSuffix: true } for "ago" suffix
-  id:invoice.id.slice(0,5),
-  updatedAt: formatDistanceToNow(new Date(invoice.updatedAt), { addSuffix: true })
-}));
-
+    id: "..." + invoice.id.slice(7, 5),
+    updatedAt: formatDistanceToNow(new Date(invoice.updatedAt), {
+      addSuffix: true,
+    }),
+  }));
 
   if (isLoading) {
-    return <div className="flex justify-center h-[100vh] items-center"><Spin /></div>
+    return (
+      <div className="flex justify-center h-[100vh] items-center">
+        <Spin />
+      </div>
+    );
   }
-  return <div className="">
-    <Table<DataType> columns={columns} dataSource={filtered} />
-  </div>
-
-}
+  return (
+    <div className="">
+      <Table<DataType> columns={columns} dataSource={filtered} size="small" />
+    </div>
+  );
+};
 
 export default Table_;
