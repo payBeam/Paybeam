@@ -54,7 +54,7 @@ const Table_: React.FC = () => {
 
   const filtered = (invoice?.data || []).map((invoice: any) => ({
     ...invoice,
-    id: "..." + invoice.id.slice(7, 5),
+    id: `... ${invoice.id.slice(7, 5)}`,
     updatedAt: formatDistanceToNow(new Date(invoice.updatedAt), {
       addSuffix: true,
     }),
