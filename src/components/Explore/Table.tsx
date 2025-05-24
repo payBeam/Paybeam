@@ -50,11 +50,11 @@ const columns: TableProps<DataType>["columns"] = [
 
 const Table_: React.FC = () => {
   const { data: invoice, isLoading } = useInvoices();
-  // console.log("Invoices", invoice?.data);
+  console.log("Invoices", invoice?.data);
 
   const filtered = (invoice?.data || []).map((invoice: any) => ({
     ...invoice,
-    id: `... ${invoice.id.slice(7, 5)}`,
+    id: `...${invoice.id.slice(-5)}`,
     updatedAt: formatDistanceToNow(new Date(invoice.updatedAt), {
       addSuffix: true,
     }),
