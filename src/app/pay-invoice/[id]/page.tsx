@@ -31,6 +31,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   }, [params]);
 
   const { data: invoice, isLoading, error } = useInvoice(memo || "");
+  console.log(invoice);
 
   const openModal = () => {
     setVisible(true);
@@ -111,7 +112,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     }
   };
 
-  if (!memo) {
+  if (!memo || !invoice) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spin size="large" />
@@ -148,7 +149,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     <div className="mx-w-lg md:max-w-xl  mx-auto p-4 py-8">
       <Nav1 />
       <div className="h-8" />
-      <InvoiceDetails />
+      <InvoiceDetails invoice={invoice?.data && invoice?.data} />
     </div>
   );
 }

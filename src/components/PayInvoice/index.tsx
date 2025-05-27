@@ -1,8 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addPaymentMode } from "@/redux/slice/SettleInvoiceSlice";
-import PaymentOption from "./PaymentOption";
+import PayMySelfSreen from "./PayYourself";
+import SplitWithFriendsScreen from "./SplitPayment";
 
-function PayInvoice() {
+function PayInvoice(invoice: any) {
   const dispatch = useAppDispatch();
   const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
 
@@ -12,26 +13,26 @@ function PayInvoice() {
       {/* memo */}
       <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
         <p>memo</p>
-        <p className="font-extralight">4637462736128378376483</p>
+        <p className="font-extralight">{invoice?.invoice.id}</p>
       </div>
 
       {/* Price */}
       <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
         <p>amount</p>
-        <p>$30</p>
+        <p>${invoice?.invoice?.amount}</p>
       </div>
 
       {/* Description */}
       <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
         <p>note</p>
-        <p className="font-extralight">payment for rented apartment</p>
+        <p className="font-extralight">{invoice?.invoice.description}</p>
       </div>
 
       {/* Progress Bar */}
       <div></div>
 
       {/* HOW DO YOU WANT TO PAY */}
-      {invoiceSettlement.step === 0 ? (
+      {invoiceSettlement.paymentMode === null ? (
         <div className="flex justify-center items-center flex-col gap-6">
           <h1>How do you want to foot the bill?</h1>
           <div className="flex gap-2">
@@ -50,10 +51,26 @@ function PayInvoice() {
           </div>
         </div>
       ) : (
-        <PaymentOption />
+        <Screens />
+        // <PaymentOption />
       )}
     </div>
   );
 }
 
 export default PayInvoice;
+
+function Screens() {
+  const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
+
+  switch (invoiceSettlement.paymentMode) {
+    case "payMyself":
+      return <PayMySelfSreen />;
+    case "split":
+      return <SplitWithFriendsScreen />;
+    default:
+      return <PayMySelfSreen />;
+  }
+}
+
+
