@@ -1,13 +1,14 @@
-'use client';
+"use client";
 import { configureStore } from "@reduxjs/toolkit";
 import profile from "./slice/ProfileSlice";
-import token from "./slice/TokenSlice"
-
+import SettleInvoiceSlice from "./slice/SettleInvoiceSlice";
+import token from "./slice/TokenSlice";
 
 export const store = configureStore({
   reducer: {
     profile,
-    token
+    token,
+    settleInvoice: SettleInvoiceSlice,
   },
 });
 

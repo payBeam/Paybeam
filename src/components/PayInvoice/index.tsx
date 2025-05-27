@@ -1,142 +1,59 @@
-import React, { useState } from 'react'
-import {
-    Modal,
-    Button,
-    Steps,
-    Form,
-    Input,
-    Radio,
-    Progress,
-    message,
-    QRCode,
-    Space
-} from 'antd'
-import {
-    DollarOutlined,
-    MailOutlined,
-    LinkOutlined,
-    UserOutlined
-} from '@ant-design/icons'
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { addPaymentMode } from "@/redux/slice/SettleInvoiceSlice";
+import PaymentOption from "./PaymentOption";
 
-const { Step } = Steps
+function PayInvoice() {
+  const dispatch = useAppDispatch();
+  const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
 
-const PaymentModal = ({ visible, onCancel }) => {
-    const [currentStep, setCurrentStep] = useState(0)
-    const [paymentMethod, setPaymentMethod] = useState('USDC')
-    const [paymentOption, setPaymentOption] = useState('self')
-    const [loading, setLoading] = useState(false)
-    const [paymentStatus, setPaymentStatus] = useState(null)
-    const [text, setText] = React.useState(
-        'https://paybeam.vercel.app/invoices'
-    )
+  return (
+    <div className="flex flex-col border rounded-lg h-screen p-5 gap-5">
+      {/* invoice details */}
+      {/* memo */}
+      <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
+        <p>memo</p>
+        <p className="font-extralight">4637462736128378376483</p>
+      </div>
 
+      {/* Price */}
+      <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
+        <p>amount</p>
+        <p>$30</p>
+      </div>
 
-    const steps = [
-        {
-            title: 'Select Payment Method',
-            content: (
-                <Form layout='vertical'>
-                    <Form.Item label='Choose a stablecoin'>
-                        <Radio.Group
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                            value={paymentMethod}
-                        >
-                            <Radio value='USDC'>USDC</Radio>
-                            <Radio value='USDT'>USDT</Radio>
-                            <Radio value='Stellar Token'>Stellar Token</Radio>
-                        </Radio.Group>
-                    </Form.Item>
-                </Form>
-            )
-        },
-        {
-            title: 'Choose Payment Option',
-            content: (
-                <Form layout='vertical'>
-                    <Form.Item label='Who will pay?'>
-                        <Radio.Group
-                            onChange={(e) => setPaymentOption(e.target.value)}
-                            value={paymentOption}
-                        >
-                            <Radio value='self'>I will pay</Radio>
-                            <Radio value='email'>Email to friends</Radio>
-                            <Radio value='split'>Split the bill</Radio>
-                        </Radio.Group>
-                    </Form.Item>
-                </Form>
-            )
-        },
-        {
-            title: 'Share to Payer',
-            content: (
-                <Space direction='vertical' align='center'>
-                    <QRCode value={text || '-'} />
-                    <Input
-                        placeholder='-'
-                        maxLength={60}
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                    />
-                </Space>
-            )
-        },
-        {
-            title: 'Verify Payment',
-            content: (
-                <div>
-                    <Progress
-                        percent={paymentStatus === 'completed' ? 100 : 50}
-                        status={paymentStatus === 'completed' ? 'success' : 'active'}
-                    />
-                    {paymentStatus === 'completed' ? (
-                        <p>Payment completed successfully!</p>
-                    ) : (
-                        <p>Waiting for payment confirmation...</p>
-                    )}
-                </div>
-            )
-        }
-    ]
+      {/* Description */}
+      <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
+        <p>note</p>
+        <p className="font-extralight">payment for rented apartment</p>
+      </div>
 
-    const handleNext = () => {
-        if (currentStep < steps.length - 1) {
-            setCurrentStep(currentStep + 1)
-        } else {
-            setLoading(true)
-            setTimeout(() => {
-                setLoading(false)
-                setPaymentStatus('completed')
-                message.success('Payment verified!')
-            }, 2000)
-        }
-    }
+      {/* Progress Bar */}
+      <div></div>
 
-    const handlePrev = () => {
-        setCurrentStep(currentStep - 1)
-    }
-
-    return (
-        <Modal
-            title='Payment Modal'
-            visible={visible}
-            onCancel={onCancel}
-            footer={[
-                <Button key='back' onClick={handlePrev} disabled={currentStep === 0}>
-                    Previous
-                </Button>,
-                <Button key='next' type='primary' onClick={handleNext}>
-                    {currentStep === steps.length - 1 ? 'Verify Payment' : 'Next'}
-                </Button>
-            ]}
-        >
-            <Steps current={currentStep}>
-                {steps.map((step) => (
-                    <Step key={step.title} title={step.title} />
-                ))}
-            </Steps>
-            <div style={{ marginTop: 24 }}>{steps[currentStep].content}</div>
-        </Modal>
-    )
+      {/* HOW DO YOU WANT TO PAY */}
+      {invoiceSettlement.step === 0 ? (
+        <div className="flex justify-center items-center flex-col gap-6">
+          <h1>How do you want to foot the bill?</h1>
+          <div className="flex gap-2">
+            <button
+              onClick={() => dispatch(addPaymentMode("payMyself"))}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              I'd Pay
+            </button>
+            <button
+              onClick={() => dispatch(addPaymentMode("split"))}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Split with Friends
+            </button>
+          </div>
+        </div>
+      ) : (
+        <PaymentOption />
+      )}
+    </div>
+  );
 }
 
-export default PaymentModal
+export default PayInvoice;

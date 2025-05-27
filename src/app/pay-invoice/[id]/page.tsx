@@ -1,14 +1,16 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { useInvoice } from '@/hooks/useInvoice';
-import { Spin, Result, Button, Card, Descriptions, Typography, Input } from 'antd';
-import { AxiosError } from 'axios';
+import Nav1 from "@/components/Navbar/Nav1";
+import InvoiceDetails from "@/components/PayInvoice";
+import { useInvoice } from "@/hooks/useInvoice";
+import {
+  usePrepApproveContract,
+  usePreparePayTx,
+} from "@/hooks/useStellarFunctions";
 import { useWalletKit } from "@/hooks/useStellarWaletKit";
-import {usePreparePayTx, usePrepApproveContract} from "@/hooks/useStellarFunctions";
+import { Button, Result, Spin, Typography } from "antd";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
-
-import PayInvoice from "@/components/PayInvoice";
 
 const { Title, Text } = Typography;
 
@@ -16,15 +18,11 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   const [memo, setMemo] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [amount, setAmount] = useState(0)
-  
+  const [amount, setAmount] = useState(0);
 
-      const { connect, publicKey, signTransaction} = useWalletKit();
-      const mutation = usePreparePayTx()
-      const trustline = usePrepApproveContract()
-  
-
-
+  const { connect, publicKey, signTransaction } = useWalletKit();
+  const mutation = usePreparePayTx();
+  const trustline = usePrepApproveContract();
 
   useEffect(() => {
     params.then((resolvedParams) => {
@@ -42,118 +40,77 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     setVisible(false);
   };
 
-    const handlePayInvoice = async() => {
+  const handlePayInvoice = async () => {
     try {
-      if(invoice) {
-
+      if (invoice) {
         if (loading) return;
         setLoading(true);
 
-        if(+amount <=0) {
-            toast.error("Please put an amount");
-                          return
+        if (+amount <= 0) {
+          toast.error("Please put an amount");
+          return;
         }
-        console.log(publicKey)
+        console.log(publicKey);
 
-        if(!publicKey) {
+        if (!publicKey) {
           await connect();
         }
 
-            const pay = async() => {
+        const pay = async () => {
+          await mutation.mutateAsync(
+            { invoiceId: invoice?.data?.id, publicKey, amount },
+            {
+              onSuccess: async (data) => {
+                // console.log("data", data);
+                const signedXdr = await signTransaction(data.data.data.xdr);
 
-    
-
-  await mutation.mutateAsync({invoiceId:invoice?.data?.id, publicKey, amount }, {
-    onSuccess: async (data) => {
-            // console.log("data", data);
-              const signedXdr = await signTransaction(data.data.data.xdr);
-
-
-               const sendtoxlm = async () => {
-                    const txRes = await fetch('https://soroban-testnet.stellar.org', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        jsonrpc: '2.0',
+                const sendtoxlm = async () => {
+                  const txRes = await fetch(
+                    "https://soroban-testnet.stellar.org",
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        jsonrpc: "2.0",
                         id: 1,
-                        method: 'sendTransaction',
-                        params: {transaction:signedXdr.signedTxXdr},
-                    }), 
-                });
-                
-                const result = await txRes.json();
-                console.log('Transaction result:', result);
-                toast.success("successfully paid invoice")
+                        method: "sendTransaction",
+                        params: { transaction: signedXdr.signedTxXdr },
+                      }),
+                    }
+                  );
+
+                  const result = await txRes.json();
+                  console.log("Transaction result:", result);
+                  toast.success("successfully paid invoice");
+                };
+
+                await sendtoxlm();
+              },
+              onError: (error) => {
+                console.error("Failed to pay invoice:", error);
+                if (error instanceof AxiosError && error.response?.data?.data) {
+                  toast.error(
+                    "error occured when paying, make sure you have added USDC as a trustline to your address"
+                  );
+                } else {
+                  toast.error("An unknown error occurred");
+                }
+              },
             }
+          );
+        };
 
-           await sendtoxlm();
-          },
-          onError: (error) => {
-            console.error("Failed to pay invoice:", error);
-            if (error instanceof AxiosError && error.response?.data?.data) {
-              toast.error("error occured when paying, make sure you have added USDC as a trustline to your address");
-            } else {
-              toast.error("An unknown error occurred");
-            }
-
-          }
-        })
-
+        if (publicKey) {
+          await pay();
         }
-               
-        
-if(publicKey) {
-                               await pay()
-
-
-  
-  // await trustline.mutateAsync({ publicKey, amount:invoice?.data?.amount }, {
-  //   onSuccess: async (data) => {
-  //           console.log(data.data.data.xdr);
-  //            const signedXdr = await signTransaction(data.data.data.xdr);
-  //               const sendtoxlm = async () => {
-  //                                const txRes = await fetch('https://soroban-testnet.stellar.org', {
-  //                                method: 'POST',
-  //                                headers: { 'Content-Type': 'application/json' },
-  //                                body: JSON.stringify({
-  //                                    jsonrpc: '2.0',
-  //                                    id: 1,
-  //                                    method: 'sendTransaction',
-  //                                    params: {transaction:signedXdr.signedTxXdr},
-  //                                }), 
-  //                            });
-                             
-  //                            const result = await txRes.json();
-  //                            console.log('Approve contract result:', result);
-  //                            toast.success("Contract approved successfully")
-  //                            await pay()
-  //                        }
-             
-  //                       await sendtoxlm();
-
-  //         },
-  //         onError: (error) => {
-  //           console.error("Failed to pay invoice:", error);
-  //           toast.error("Failed to pay invoice");
-
-  //         }
-  //       })
-        
-        
-      
-
-        
-        
       }
-    }
-    }catch (err) {
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     } finally {
-   setLoading(false)
-      
+      setLoading(false);
     }
-  }
-  
+  };
+
   if (!memo) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -164,7 +121,7 @@ if(publicKey) {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen ">
         <Result
           status="error"
           title="Invoice Error"
@@ -174,9 +131,13 @@ if(publicKey) {
               : "An unknown error occurred"
           }
           extra={[
-            <Button type="primary" key="retry" onClick={() => window.location.reload()}>
+            <Button
+              type="primary"
+              key="retry"
+              onClick={() => window.location.reload()}
+            >
               Retry
-            </Button>
+            </Button>,
           ]}
         />
       </div>
@@ -184,15 +145,28 @@ if(publicKey) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <Card className="shadow-md">
-        <Title level={2} className="text-center mb-6">Invoice Details</Title>
+    <div className="mx-w-lg md:max-w-xl  mx-auto p-4 py-8">
+      <Nav1 />
+      <div className="h-8" />
+      <InvoiceDetails />
+    </div>
+  );
+}
+
+export default Page;
+
+/* 
+
+ <Card className="shadow-md">
+        <Title level={2} className="text-center mb-6">
+          Invoice Details
+        </Title>
 
         {invoice?.data ? (
           <div className="space-y-6">
             <Descriptions bordered column={1}>
               <Descriptions.Item label="Description">
-                {invoice.data?.description || 'N/A'}
+                {invoice.data?.description || "N/A"}
               </Descriptions.Item>
               <Descriptions.Item label="Amount">
                 {invoice.data.amount}
@@ -203,16 +177,16 @@ if(publicKey) {
             </Descriptions>
 
             <div className="flex flex-col   space-y-3 w-full">
-                          <p>Amount  (USDC)</p>
-                          <Input
-                              name="amount"
-                              type="number"
-                              size="large"
-                              placeholder="amount is USDC"
-                              value={amount}
-                              onChange={(e) => setAmount(+e.target.value)}
-                          />
-                      </div>
+              <p>Amount (USDC)</p>
+              <Input
+                name="amount"
+                type="number"
+                size="large"
+                placeholder="amount is USDC"
+                value={amount}
+                onChange={(e) => setAmount(+e.target.value)}
+              />
+            </div>
 
             <div className="flex justify-center mt-8">
               <Button
@@ -235,14 +209,7 @@ if(publicKey) {
           </div>
         )}
       </Card>
-    </div>
-  );
-}
-
-export default Page;
-
-
-
+*/
 
 /* 
 export async function waitForConfirmationWithProgress(

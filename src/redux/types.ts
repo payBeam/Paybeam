@@ -1,12 +1,10 @@
-
 export interface UserDetails {
-email:  string;
-id: string;
-password: string;
-createdAt: string;
-updatedAt: string;
+  email: string;
+  id: string;
+  password: string;
+  createdAt: string;
+  updatedAt: string;
 }
-
 
 export interface TokenDetail {
   address: `0x${string}`;
@@ -16,9 +14,15 @@ export interface TokenDetail {
 }
 
 export interface Token {
-    token1: TokenDetail
-    token2: TokenDetail
+  token1: TokenDetail;
+  token2: TokenDetail;
 }
 
+export interface SettleInvoiceType {
+  memo: string;
+  step: number;
+  token: Token | null;
+  paymentMode: PaymentModeType | null;
+}
 
-
+export type PaymentModeType = "payMyself" | "split";
