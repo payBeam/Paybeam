@@ -43,6 +43,7 @@ function Pay() {
         `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
       );
       const data = await res.json();
+      console.log("Fetched token prices:", data);
       setTokenPrices(data);
     };
 
@@ -62,9 +63,7 @@ function Pay() {
         >
           <IoIosArrowBack />
         </div>
-        <h1 className="text-xl font-bold mb-4">
-          Pay Now
-        </h1>
+        <h1 className="text-xl font-bold mb-4">Pay Now</h1>
         <div style={{ width: 24 }} /> {/* Spacer */}
       </div>
 
@@ -76,11 +75,12 @@ function Pay() {
 
       {/* Supported Tokens */}
       <Flex wrap="wrap" justify="center" align="center" gap="8px 12px">
-        {supportedTokens.map((token) => {
-          const price = tokenPrices[token.id] || 0;
-          const amount = price
-            ? (invoiceAmount / price).toFixed(6)
-            : "Loading...";
+        {supportedTokens.map((token: any) => {
+            console.log(tokenPrices[token.id])
+            const tokenData = tokenPrices[token.id] as any;
+          const price = tokenData?.usd ?? 0;
+          const amount =
+            price > 0 ? (invoiceAmount / price).toFixed(6) : "Loading...";
           return (
             <TokenTag
               key={token.id}

@@ -1,8 +1,4 @@
-// 1. if the option is split with friends, then the user can add amount that the friend should foot
-// and then he sees the link to share to those friends, and his own share to pay
-//2. if the option is pay myself, then the user sees list of supported tokens to pay with
-// clcekning on toekn of choice shows qr code to scan to pay, function to call to pay, address to transfer to with memo
-// then a listening ui to show when the payment is successful
+
 import React from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
