@@ -54,7 +54,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
         console.log(publicKey);
 
         if (!publicKey) {
-          await connect();
+          // await connect();
         }
 
         const pay = async () => {
