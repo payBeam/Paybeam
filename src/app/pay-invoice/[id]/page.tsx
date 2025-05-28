@@ -33,84 +33,84 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   const { data: invoice, isLoading, error } = useInvoice(memo || "");
   console.log(invoice);
 
-  const openModal = () => {
-    setVisible(true);
-  };
+  // const openModal = () => {
+  //   setVisible(true);
+  // };
 
-  const handleCancel = () => {
-    setVisible(false);
-  };
+  // const handleCancel = () => {
+  //   setVisible(false);
+  // };
 
-  const handlePayInvoice = async () => {
-    try {
-      if (invoice) {
-        if (loading) return;
-        setLoading(true);
+  // const handlePayInvoice = async () => {
+  //   try {
+  //     if (invoice) {
+  //       if (loading) return;
+  //       setLoading(true);
 
-        if (+amount <= 0) {
-          toast.error("Please put an amount");
-          return;
-        }
-        console.log(publicKey);
+  //       if (+amount <= 0) {
+  //         toast.error("Please put an amount");
+  //         return;
+  //       }
+  //       console.log(publicKey);
 
-        if (!publicKey) {
-          // await connect();
-        }
+  //       if (!publicKey) {
+  //         // await connect();
+  //       }
 
-        const pay = async () => {
-          await mutation.mutateAsync(
-            { invoiceId: invoice?.data?.id, publicKey, amount },
-            {
-              onSuccess: async (data) => {
-                // console.log("data", data);
-                const signedXdr = await signTransaction(data.data.data.xdr);
+  //       const pay = async () => {
+  //         await mutation.mutateAsync(
+  //           { invoiceId: invoice?.data?.id, publicKey, amount },
+  //           {
+  //             onSuccess: async (data) => {
+  //               // console.log("data", data);
+  //               const signedXdr = await signTransaction(data.data.data.xdr);
 
-                const sendtoxlm = async () => {
-                  const txRes = await fetch(
-                    "https://soroban-testnet.stellar.org",
-                    {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        jsonrpc: "2.0",
-                        id: 1,
-                        method: "sendTransaction",
-                        params: { transaction: signedXdr.signedTxXdr },
-                      }),
-                    }
-                  );
+  //               const sendtoxlm = async () => {
+  //                 const txRes = await fetch(
+  //                   "https://soroban-testnet.stellar.org",
+  //                   {
+  //                     method: "POST",
+  //                     headers: { "Content-Type": "application/json" },
+  //                     body: JSON.stringify({
+  //                       jsonrpc: "2.0",
+  //                       id: 1,
+  //                       method: "sendTransaction",
+  //                       params: { transaction: signedXdr.signedTxXdr },
+  //                     }),
+  //                   }
+  //                 );
 
-                  const result = await txRes.json();
-                  console.log("Transaction result:", result);
-                  toast.success("successfully paid invoice");
-                };
+  //                 const result = await txRes.json();
+  //                 console.log("Transaction result:", result);
+  //                 toast.success("successfully paid invoice");
+  //               };
 
-                await sendtoxlm();
-              },
-              onError: (error) => {
-                console.error("Failed to pay invoice:", error);
-                if (error instanceof AxiosError && error.response?.data?.data) {
-                  toast.error(
-                    "error occured when paying, make sure you have added USDC as a trustline to your address"
-                  );
-                } else {
-                  toast.error("An unknown error occurred");
-                }
-              },
-            }
-          );
-        };
+  //               await sendtoxlm();
+  //             },
+  //             onError: (error) => {
+  //               console.error("Failed to pay invoice:", error);
+  //               if (error instanceof AxiosError && error.response?.data?.data) {
+  //                 toast.error(
+  //                   "error occured when paying, make sure you have added USDC as a trustline to your address"
+  //                 );
+  //               } else {
+  //                 toast.error("An unknown error occurred");
+  //               }
+  //             },
+  //           }
+  //         );
+  //       };
 
-        if (publicKey) {
-          await pay();
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //       if (publicKey) {
+  //         await pay();
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (!memo || !invoice) {
     return (
@@ -138,7 +138,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               onClick={() => window.location.reload()}
             >
               Retry
-            </Button>,
+            </Button>
           ]}
         />
       </div>
