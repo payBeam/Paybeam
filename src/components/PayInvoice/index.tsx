@@ -1,3 +1,4 @@
+import React from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addPaymentMode } from "@/redux/slice/SettleInvoiceSlice";
 import PayMySelfSreen from "./PayYourself";
@@ -8,7 +9,7 @@ function PayInvoice(invoice: any) {
   const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
 
   return (
-    <div className="flex flex-col border rounded-lg h-screen p-5 gap-5">
+    <div className="flex flex-col border rounded-lg  p-5 gap-5">
       {/* invoice details */}
       {/* memo */}
       <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">

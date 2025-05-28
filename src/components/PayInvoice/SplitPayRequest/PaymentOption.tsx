@@ -4,6 +4,7 @@
 // clcekning on toekn of choice shows qr code to scan to pay, function to call to pay, address to transfer to with memo
 // then a listening ui to show when the payment is successful
 //
+import React from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
 import { FaEthereum } from "react-icons/fa";

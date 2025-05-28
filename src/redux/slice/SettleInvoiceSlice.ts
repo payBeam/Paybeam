@@ -43,7 +43,6 @@ export const SettleInvoiceSlice = createSlice({
     addPaymentMode: (state, { payload }: PayloadAction<PaymentModeType>) => {
       if (state) {
         state.paymentMode = payload;
-        // state.step = 1;
       }
     },
   },
