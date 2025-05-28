@@ -1,15 +1,54 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
 import { Button, Flex, QRCode, Statistic, Tag } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { SiBinance, SiCoinbase, SiFantom, SiPolygon } from "react-icons/si";
 import { TbCurrencySolana } from "react-icons/tb";
 
 const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+const supportedTokens = [
+  { id: "ethereum", label: "Ethereum", icon: <FaEthereum />, color: "#627eea" },
+  { id: "binancecoin", label: "BNB", icon: <SiBinance />, color: "#f3ba2f" },
+  {
+    id: "coinbase-wrapped-bitcoin",
+    label: "Coinbase",
+    icon: <SiCoinbase />,
+    color: "#1652f0",
+  },
+  {
+    id: "solana",
+    label: "Solana",
+    icon: <TbCurrencySolana />,
+    color: "#9945FF",
+  },
+  { id: "bitcoin", label: "Bitcoin", icon: <FaBitcoin />, color: "#f7931a" },
+  { id: "polygon", label: "Polygon", icon: <SiPolygon />, color: "#a100ff" },
+  { id: "fantom", label: "Fantom", icon: <SiFantom />, color: "#13B5EC" },
+  { id: "avalanche-2", label: "Avalanche", color: "#e84142" },
+  { id: "zetachain", label: "ZetaChain", color: "green" },
+];
 
 function Pay() {
+  const [tokenPrices, setTokenPrices] = React.useState<{
+    [key: string]: number;
+  }>({});
+  const invoiceAmount = 5; // $5
+
+  useEffect(() => {
+    const fetchPrices = async () => {
+      const ids = supportedTokens.map((t) => t.id).join(",");
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
+      );
+      const data = await res.json();
+      setTokenPrices(data);
+    };
+
+    fetchPrices();
+  }, []);
+
   const dispatch = useAppDispatch();
   const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
 
@@ -19,11 +58,11 @@ function Pay() {
       <div className="flex items-center justify-between">
         <div
           onClick={() => dispatch(changeStep(invoiceSettlement.step - 1))}
-          className="cursor-pointer text-xl"
+          className="cursor-pointer"
         >
           <IoIosArrowBack />
         </div>
-        <h1 className="text-xl font-bold text-center flex-1 ml-[-24px]">
+        <h1 className="text-xl font-bold mb-4">
           Pay Now
         </h1>
         <div style={{ width: 24 }} /> {/* Spacer */}
@@ -37,50 +76,21 @@ function Pay() {
 
       {/* Supported Tokens */}
       <Flex wrap="wrap" justify="center" align="center" gap="8px 12px">
-        <TokenTag
-          amount={0.6}
-          color="#627eea"
-          icon={<FaEthereum />}
-          label="Ethereum"
-        />
-        <TokenTag
-          amount={0.6}
-          color="#f3ba2f"
-          icon={<SiBinance />}
-          label="BNB"
-        />
-        <TokenTag
-          amount={0.6}
-          color="#1652f0"
-          icon={<SiCoinbase />}
-          label="Coinbase"
-        />
-        <TokenTag
-          amount={0.6}
-          color="#9945FF"
-          icon={<TbCurrencySolana />}
-          label="Solana"
-        />
-        <TokenTag
-          amount={0.6}
-          color="#f7931a"
-          icon={<FaBitcoin />}
-          label="Bitcoin"
-        />
-        <TokenTag
-          amount={0.6}
-          color="#a100ff"
-          icon={<SiPolygon />}
-          label="Polygon"
-        />
-        <TokenTag
-          amount={0.6}
-          color="#13B5EC"
-          icon={<SiFantom />}
-          label="Fantom"
-        />
-        <TokenTag amount={0.6} color="#e84142" label="Avalanche" />
-        <TokenTag amount={0.6} color="green" label="ZetaChain" />
+        {supportedTokens.map((token) => {
+          const price = tokenPrices[token.id] || 0;
+          const amount = price
+            ? (invoiceAmount / price).toFixed(6)
+            : "Loading...";
+          return (
+            <TokenTag
+              key={token.id}
+              amount={amount}
+              color={token.color}
+              icon={token.icon}
+              label={token.label}
+            />
+          );
+        })}
       </Flex>
 
       {/* QR Code & Address */}
@@ -114,7 +124,7 @@ const TokenTag = ({
   icon,
   label,
 }: {
-  amount: number;
+  amount: string;
   color: string;
   icon?: React.ReactNode;
   label: string;

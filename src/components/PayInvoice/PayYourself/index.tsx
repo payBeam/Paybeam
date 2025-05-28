@@ -12,9 +12,9 @@ function PayMySelfSreen() {
     case 1:
       return <Pay />;
     case 2:
-      return <div>screen 0</div>;
+      return <div>screen 2</div>;
     case 4:
-      return <div>screen 1</div>;
+      return <div>screen 4</div>;
     default:
       return <PaymentOption />;
   }
