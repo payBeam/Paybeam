@@ -125,7 +125,7 @@ function Pay() {
         </h3>
         <Flex wrap="wrap" justify="center" align="center" gap="8px 12px">
           {supportedTokens.map((token) => {
-            const tokenData = tokenPrices[token.id];
+            const tokenData = tokenPrices[token.id] as any;
             const price = tokenData?.usd ?? 0;
             const amount =
               price > 0 ? (invoiceAmount / price).toFixed(6) : "Loading...";
