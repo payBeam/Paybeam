@@ -65,7 +65,7 @@ export const useUserContext = () => {
         setInvoice,
         memo, 
         setMemo,
-            isDarkMode,
+        isDarkMode,
         setIsDarkMode,
     };
 }; 
