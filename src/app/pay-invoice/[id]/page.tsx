@@ -7,10 +7,11 @@ import {
   usePreparePayTx,
 } from "@/hooks/useStellarFunctions";
 import { useWalletKit } from "@/hooks/useStellarWaletKit";
+import { useAppDispatch } from "@/redux/hook";
+import { addInvoice } from "@/redux/slice/SettleInvoiceSlice";
 import { Button, Result, Spin, Typography } from "antd";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 
@@ -32,6 +33,20 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const { data: invoice, isLoading, error } = useInvoice(memo || "");
   console.log(invoice);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (invoice?.data) {
+      const payload = {
+        memo: invoice.data.id,
+        amount: invoice.data.amount,
+        step: 0,
+        token: null,
+        paymentMode: null
+      };
+      dispatch(addInvoice(payload));
+    }
+  }, [invoice, dispatch]);
 
   // const openModal = () => {
   //   setVisible(true);
@@ -138,7 +153,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               onClick={() => window.location.reload()}
             >
               Retry
-            </Button>
+            </Button>,
           ]}
         />
       </div>

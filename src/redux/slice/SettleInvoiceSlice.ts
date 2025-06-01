@@ -1,7 +1,7 @@
-'use client';
-import { createSlice } from "@reduxjs/toolkit";
+"use client";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { SettleInvoiceType, PaymentModeType } from "../types";
+import { createSlice } from "@reduxjs/toolkit";
+import { PaymentModeType, SettleInvoiceType } from "../types";
 
 // Define the initial state using that type
 const initialState: SettleInvoiceType = {
@@ -9,24 +9,21 @@ const initialState: SettleInvoiceType = {
   step: 0,
   token: null,
   paymentMode: null,
-  }
-
+  amount: 0,
+};
 
 export const SettleInvoiceSlice = createSlice({
   name: "settleInvoice",
   initialState,
   reducers: {
-    // addProfile: (state, { payload }: PayloadAction<SettleInvoiceType>) => {
-    //   console.log(payload);
-    //   if (state === null) {
-    //     return payload;
-    //   }
-    //   state.email = payload.;
-    //   state.id = payload.id;
-    //   state.password = payload.password;
-    //   state.createdAt = payload.createdAt;
-    //   state.updatedAt = payload.updatedAt;
-    // },
+    addInvoice: (state, { payload }: PayloadAction<SettleInvoiceType>) => {
+      console.log(payload);
+      if (state === null) {
+        return payload;
+      }
+      state.memo = payload.memo;
+      state.amount = payload.amount;
+    },
     addSettlementStep: (state, { payload }: PayloadAction<number>) => {
       if (state) {
         state.step = payload;
@@ -48,7 +45,12 @@ export const SettleInvoiceSlice = createSlice({
   },
 });
 
-export const { addSettlementStep, clearSettlment, addPaymentMode, changeStep } =
-  SettleInvoiceSlice.actions;
+export const {
+  addSettlementStep,
+  clearSettlment,
+  addPaymentMode,
+  changeStep,
+  addInvoice,
+} = SettleInvoiceSlice.actions;
 
 export default SettleInvoiceSlice.reducer;

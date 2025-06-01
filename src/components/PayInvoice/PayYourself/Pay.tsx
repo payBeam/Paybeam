@@ -78,10 +78,9 @@ function Pay() {
   const dispatch = useAppDispatch();
   const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
   const [tokenPrices, setTokenPrices] = useState<{ [key: string]: number }>({});
-  const invoiceAmount = 5; // $5
+
 
   const address = "0xdcdsuyd878suddf87d9";
-  const memo = "INV-123456789";
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -128,7 +127,7 @@ function Pay() {
             const tokenData = tokenPrices[token.id] as any;
             const price = tokenData?.usd ?? 0;
             const amount =
-              price > 0 ? (invoiceAmount / price).toFixed(6) : "Loading...";
+              price > 0 ? (invoiceSettlement.amount / price).toFixed(6) : "Loading...";
             return (
               <TokenTag
                 key={token.id}
@@ -170,7 +169,7 @@ function Pay() {
           memo below.
         </p>
         <Copyable label="Address" value={address} />
-        <Copyable label="Memo" value={memo} />
+        <Copyable label="Memo" value={invoiceSettlement.memo} />
       </section>
 
       <hr className="border-gray-300 dark:border-gray-700" />
@@ -184,7 +183,7 @@ function Pay() {
           Open your Paybeam Wallet app and scan this QR code to pay instantly.
         </p>
         <QRCode
-          value={`paybeam://pay?to=${address}&memo=${memo}`}
+          value={`paybeam://pay?to=${address}&memo=${invoiceSettlement.memo}`}
           size={160}
           color="green"
         />

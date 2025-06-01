@@ -23,6 +23,7 @@ export interface SettleInvoiceType {
   step: number;
   token: Token | null;
   paymentMode: PaymentModeType | null;
+  amount: number
 }
 
 export type PaymentModeType = "payMyself" | "split";
