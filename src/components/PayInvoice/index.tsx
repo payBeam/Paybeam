@@ -20,7 +20,7 @@ function PayInvoice(invoice: any) {
       {/* Price */}
       <div className="flex justify-between rounded-sm p-2 bg-gray-100 dark:bg-gray-800">
         <p>amount</p>
-        <p>${invoice?.invoice?.amount}</p>
+        <p>${invoice?.invoice?.amount.toLocaleString()}</p>
       </div>
 
       {/* Description */}
