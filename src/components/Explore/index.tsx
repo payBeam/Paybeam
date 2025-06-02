@@ -42,6 +42,7 @@ const Explore = () => {
         </div>
       ) : (
         <div className="">
+          <Nav1 />
         <Alert
   message="payBeam is currently in development"
   description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
@@ -49,7 +50,6 @@ const Explore = () => {
   showIcon
 />
 
-          <Nav1 />
           {user?.data && (
             <div className="flex justify-center items-center">
               {user?.data?.merchant?.id ? (
