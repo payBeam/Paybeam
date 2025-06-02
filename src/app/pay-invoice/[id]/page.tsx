@@ -9,7 +9,7 @@ import {
 import { useWalletKit } from "@/hooks/useStellarWaletKit";
 import { useAppDispatch } from "@/redux/hook";
 import { addInvoice } from "@/redux/slice/SettleInvoiceSlice";
-import { Button, Result, Spin, Typography } from "antd";
+import { Button, Result, Spin, Typography, Alert } from "antd";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
@@ -163,6 +163,12 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <div className="mx-w-lg md:max-w-xl  mx-auto p-4 py-8">
       <Nav1 />
+              <Alert
+        message="payBeam is currently in development"
+        description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
+        type="info"
+        showIcon
+      />
       <div className="h-8" />
       <InvoiceDetails invoice={invoice?.data && invoice?.data} />
     </div>
