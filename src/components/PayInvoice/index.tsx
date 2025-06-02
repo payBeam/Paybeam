@@ -1,6 +1,6 @@
-import React from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addPaymentMode } from "@/redux/slice/SettleInvoiceSlice";
+import toast from "react-hot-toast";
 import PayMySelfSreen from "./PayYourself";
 import SplitWithFriendsScreen from "./SplitPayment";
 
@@ -38,16 +38,17 @@ function PayInvoice(invoice: any) {
           <h1>How do you want to foot the bill?</h1>
           <div className="flex gap-2">
             <button
+              // onClick={() => dispatch(addPaymentMode("split"))}
+              onClick={() => toast.error("This feature is not available yet.")}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Split with Friends
+            </button>
+            <button
               onClick={() => dispatch(addPaymentMode("payMyself"))}
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               I'd Pay
-            </button>
-            <button
-              onClick={() => dispatch(addPaymentMode("split"))}
-              className="bg-gray-300 text-black px-4 py-2 rounded"
-            >
-              Split with Friends
             </button>
           </div>
         </div>
@@ -73,5 +74,3 @@ function Screens() {
       return <PayMySelfSreen />;
   }
 }
-
-

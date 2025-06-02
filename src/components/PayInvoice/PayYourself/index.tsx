@@ -12,7 +12,7 @@ function PayMySelfSreen() {
     case 1:
       return <Pay />;
     case 2:
-      return <div>screen 2</div>;
+      return <div className="flex justify-center items-center">feature under development</div>;
     case 4:
       return <div>screen 4</div>;
     default:

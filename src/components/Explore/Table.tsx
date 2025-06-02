@@ -17,6 +17,8 @@ const columns: TableProps<DataType>["columns"] = [
     title: "Desc",
     dataIndex: "description",
     key: "id",
+    defaultSortOrder: "ascend",
+    // sorter: (a, b) => a.key - b.key,
   },
   {
     title: "Status",
