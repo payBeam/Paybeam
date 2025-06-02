@@ -19,14 +19,14 @@ const Copyable = ({ label, value }: { label: string; value: string }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(value);
+    navigator.clipboard.writeText("0x1a983c4e0b9f57b5b34b6c753ab13828ad21969f");
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
 
   return (
     <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md text-sm w-full">
-      <div className="truncate">{value}</div>
+      <div className="truncate text-sm">{value}</div>
       <Tooltip title={copied ? "Copied!" : `Copy ${label}`}>
         <button onClick={handleCopy} className="ml-2">
           {copied ? (
@@ -80,7 +80,7 @@ function Pay() {
   const [tokenPrices, setTokenPrices] = useState<{ [key: string]: number }>({});
 
 
-  const address = "0x1a983c4e0b9f57b5b34b6c753ab13828ad21969f";
+  const address = "0x1a983c4e0b9f57b5b34b6c758...";
 
   useEffect(() => {
     const fetchPrices = async () => {
