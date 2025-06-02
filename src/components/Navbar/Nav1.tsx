@@ -39,7 +39,7 @@ export default function FloatingDockDemo() {
   ];
 
   return (
-    <div className="flex justify-between items-center mt-5">
+    <div className="flex justify-between items-center my-5">
       <div className="text-3xl font-bold z-2 font-sans">
         <Logo />
       </div>
