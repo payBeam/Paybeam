@@ -80,7 +80,7 @@ function Pay() {
   const [tokenPrices, setTokenPrices] = useState<{ [key: string]: number }>({});
 
 
-  const address = "0xdcdsuyd878suddf87d9";
+  const address = "0x1a983c4e0b9f57b5b34b6c753ab13828ad21969f";
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -169,7 +169,7 @@ function Pay() {
           memo below.
         </p>
         <Copyable label="Address" value={address} />
-        <Copyable label="Memo" value={invoiceSettlement.memo} />
+        {/* <Copyable label="Memo" value={invoiceSettlement.memo} /> */}
       </section>
 
       <hr className="border-gray-300 dark:border-gray-700" />
