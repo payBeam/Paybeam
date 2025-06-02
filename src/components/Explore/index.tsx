@@ -11,6 +11,7 @@ import { useUser } from "@/hooks/useUser";
 import MerchantCreationForm from "./CreateMerchant";
 import CreateInvoiceModal from "./Form";
 import Table from "./Table";
+import { Alert } from 'antd';
 
 const { Search } = Input;
 
@@ -41,6 +42,13 @@ const Explore = () => {
         </div>
       ) : (
         <div className="">
+        <Alert
+  message="payBeam is currently in development"
+  description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
+  type="info"
+  showIcon
+/>
+
           <Nav1 />
           {user?.data && (
             <div className="flex justify-center items-center">
