@@ -4,7 +4,7 @@ import api from '@/utils/auth';
 
 
 const fetchUser = async () => {
-    const response = await api.get('/api/user');
+    const response = await api.get('/api/v1/user');
     return response.data; // Axios wraps response in `data`
 };
 
@@ -22,7 +22,7 @@ export const useCreateUser = () => {
 
     return useMutation({
         mutationFn: (newUser: any) =>
-            api.post('/api/auth/google', { payload: newUser }),
+            api.post('/api/v1/auth/google', { payload: newUser }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['user'] });
         },

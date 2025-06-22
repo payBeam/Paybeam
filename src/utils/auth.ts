@@ -72,7 +72,7 @@ api.interceptors.response.use(
 const refreshAccessToken = async () => {
     try {
         // Note: The refresh token is automatically sent via HTTP-only cookie
-        const response = await api.post('/api/auth/refresh-token');
+        const response = await api.post('/api/v1/auth/refresh-token');
         const { accessToken } = response.data.data;
 
         storeTokens(accessToken);
@@ -96,7 +96,7 @@ export const logout = async () => {
     sessionStorage.removeItem('accessToken');
 
     // Call backend logout to clear HTTP-only cookie
-    await api.post('/api/auth/logout');
+    await api.post('/api/v1/auth/logout');
     toast.success("logout successful");
     redirectTo("/");
     return

@@ -4,7 +4,7 @@ import api from '@/utils/auth';
 
 
 const fetchMerchant = async () => {
-    const response = await api.get('/api/merchant');
+    const response = await api.get('/api/v1/merchant');
     return response.data; // Axios wraps response in `data`
 };
 
@@ -22,7 +22,7 @@ export const useCreateMerchant = () => {
 
     return useMutation({
         mutationFn: (newMerchant: { name: string; description: string }) =>
-            api.post('/api/merchant/create', newMerchant),
+            api.post('/api/v1/merchant/create', newMerchant),
         onSuccess: () => {
             // Invalidate cache to refetch merchant
             queryClient.invalidateQueries({ queryKey: ['merchant'] });

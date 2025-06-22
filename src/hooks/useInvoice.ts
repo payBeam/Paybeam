@@ -7,7 +7,7 @@ enum TokenType {
 }
 
 const fetchInvoices = async () => {
-    const response = await api.get('/api/invoice');
+    const response = await api.get('/api/v1/invoice');
     return response.data; // Axios wraps response in `data`
 };
 
@@ -30,7 +30,7 @@ export const useCreateInvoice = () => {
             tokenType: TokenType;
             amount: number;
             publicKey: string
-        }) => api.post("/api/invoice/create", { title, description, tokenType, amount, publicKey }),
+        }) => api.post("/api/v1/invoice/create", { title, description, tokenType, amount, publicKey }),
 
         onSuccess: () => {
             // Invalidate cache to refetch invoices
@@ -46,7 +46,7 @@ export const useCreateInvoice = () => {
 
 
 const fetchInvoiceById = async (id: string) => {
-    const response = await api.get(`/api/invoice-settlement/${id}`);
+    const response = await api.get(`/api/v1/invoice-settlement/${id}`);
     return response.data; // Axios wraps response in `data`
 };
 
@@ -62,7 +62,7 @@ export const useInvoice = (id: string) => {
 
 
 const fetchBalance = async () => {
-    const response = await api.get(`/api/invoice/balance`);
+    const response = await api.get(`/api/v1/invoice/balance`);
     return response.data; // Axios wraps response in `data`
 };
 
