@@ -19,7 +19,7 @@ const Copyable = ({ label, value }: { label: string; value: string }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("0x1a983c4e0b9f57b5b34b6c753ab13828ad21969f");
+    navigator.clipboard.writeText("0x8e827a12C78dED9459268eb05cce2C5d709FE6AF");
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
