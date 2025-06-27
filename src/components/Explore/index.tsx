@@ -8,10 +8,10 @@ import { useClient } from "@/Context/index";
 import { useBalance } from "@/hooks/useInvoice";
 import { useRouter } from "@/hooks/useRouterWithProgress";
 import { useUser } from "@/hooks/useUser";
+import { Alert } from 'antd';
 import MerchantCreationForm from "./CreateMerchant";
 import CreateInvoiceModal from "./Form";
 import Table from "./Table";
-import { Alert } from 'antd';
 
 const { Search } = Input;
 

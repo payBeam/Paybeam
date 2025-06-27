@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/utils/auth';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 enum TokenType {
     USDC = "USDC",
@@ -24,13 +24,10 @@ export const useCreateInvoice = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ title, description, tokenType, amount, publicKey }: {
-            title: string;
+        mutationFn: ({  description, amount}: {
             description: string;
-            tokenType: TokenType;
             amount: number;
-            publicKey: string
-        }) => api.post("/api/v1/invoice/create", { title, description, tokenType, amount, publicKey }),
+        }) => api.post("/api/v1/invoice/create-on-zeta", { description, amount }),
 
         onSuccess: () => {
             // Invalidate cache to refetch invoices

@@ -2,6 +2,25 @@
 import React, { useContext, useState } from "react";
 
 
+// TODO  show a ui that allows the merhcant to choose this, for now we will hardcode to zeta
+// this to be shown on merhcant creation not per inivoice creation
+// you should be able to chnaeg this in your profile or settings
+// type TokenType = {
+//     USDC = "USDC",
+//     XRP = "XRP",    
+//     USDT = "USDT",
+//     // BTC = "BTC",
+//     XLM = "XLM",
+//     ZETA = "ZETA",
+//     ETH = "ETH",
+//     BASE = "BASE",
+//     BNB = "BNB",
+//     SOL = "SOL",
+//     TON = "TON",
+//     TRX = "TRX",
+//   }
+  
+
 interface DrawerParam {
     title: string;
     body: string;
@@ -24,6 +43,8 @@ const UserContext = React.createContext<{
     setMemo:any;
     isDarkMode: boolean;
     setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+    txHash: string;
+    setTxHash: React.Dispatch<React.SetStateAction<string>>;
     
 
 }>(undefined);
@@ -34,16 +55,19 @@ export const useUserContext = () => {
     const [openCreateInvoiceModal, setOpenCreateInvoiceModal] = useState(false);
     const [steps, setSteps] = useState(0);
     const [memo, setMemo] = useState("")
+    const [txHash, setTxHash] = useState("");
      const [merchant, setMerchant] = useState({
         name: "",
         description: "",
         })
 
-    const [invoice, setInvoice] = useState({
-        title: "",
+    const [invoice, setInvoice] = useState< {
+        description: string;
+        amount: number
+        
+    }>({
         description: "",
         amount:0,
-        tokenType: "USDC"
     })
      const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -67,6 +91,8 @@ export const useUserContext = () => {
         setMemo,
         isDarkMode,
         setIsDarkMode,
+        txHash,
+        setTxHash
     };
 }; 
 

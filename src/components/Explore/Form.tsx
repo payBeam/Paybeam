@@ -1,8 +1,9 @@
 import { useClient } from "@/Context/index";
 import { useCreateInvoice } from "@/hooks/useInvoice";
 import { useWalletKit } from "@/hooks/useStellarWaletKit";
+import {CheckCircleOutlined } from '@ant-design/icons';
 import type { TimePickerProps } from "antd";
-import { Button, Input, Modal, Result, Steps } from "antd";
+import { Button, Input, Modal, Result, Steps, Typography } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useState } from "react";
@@ -10,6 +11,7 @@ import toast from "react-hot-toast";
 
 dayjs.extend(customParseFormat);
 
+const { Paragraph, Text } = Typography;
 const { TextArea } = Input;
 
 function CreateMerchant() {
@@ -54,7 +56,6 @@ function CreateMerchant() {
 export default CreateMerchant;
 
 function Screens({ steps }: { steps: number }) {
-  const [loading, setLoading] = useState(false);
 
   switch (steps) {
     case 0:
@@ -73,10 +74,9 @@ function Screens({ steps }: { steps: number }) {
 }
 
 function CreateInvoice() {
-  const { invoice, setInvoice, setOpenCreateInvoiceModal, setSteps, setMemo } =
+  const { invoice, setInvoice, setOpenCreateInvoiceModal, setSteps, setMemo, setTxHash } =
     useClient();
   const [loading, setLoading] = useState(false);
-  const { connect, publicKey, signTransaction } = useWalletKit();
 
   const mutation = useCreateInvoice();
   // const prepareTransaction = useCreateInvoice()
@@ -102,40 +102,16 @@ function CreateInvoice() {
       //send the public key and invoice data to the backend to prepare the transaction
       // await prepareTransaction.mutateAsync({})
       await mutation.mutateAsync(
-        { ...invoice, amount: +invoice.amount, publicKey },
+        { ...invoice, amount: +invoice.amount },
         {
-          onSuccess: async (data) => {
-            // get the xrp from the response, and sign the transaction with it
-            const signedXdr = await signTransaction(data.data.data.xdr.xdr);
-
-            console.log("signedXdr", signedXdr);
-            // if successfull, now create the invoice within paybeam
-            const sendtoxlm = async () => {
-              const txRes = await fetch("https://soroban-testnet.stellar.org", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  jsonrpc: "2.0",
-                  id: 1,
-                  method: "sendTransaction",
-                  params: { transaction: signedXdr.signedTxXdr },
-                }),
-              });
-
-              const result = await txRes.json();
-              console.log("Transaction result:", result);
-            };
-
-            await sendtoxlm();
-
-            console.log("invoice", data.data.data.invoice.id);
+          onSuccess: async (data: any) => {
+            // console.log("data", data.data);
+            setTxHash( data.data.data.txHash)
             setMemo(data.data.data.invoice.id);
             setSteps(1);
             setInvoice({
-              title: "",
               description: "",
-              tokenType: "USDC",
-              amount: 0,
+              amount: 0
             });
           },
           onError: (error) => {
@@ -200,7 +176,9 @@ function CreateInvoice() {
 }
 
 function CopyLink() {
-  const { setOpenCreateInvoiceModal, setSteps, memo, setMemo } = useClient();
+  const { setOpenCreateInvoiceModal, setSteps, memo, setMemo, txHash, setTxHash } = useClient();
+
+  const viewOnExplorer = `https://zetachain-testnet.blockscout.com/tx/${txHash}`;
 
   const handleCopy = async () => {
     try {
@@ -226,12 +204,20 @@ function CopyLink() {
           onClick={() => {
             setOpenCreateInvoiceModal(false);
             setMemo("");
+            setTxHash("");
             setSteps(0);
           }}
         >
           Close
-        </Button>,
+        </Button>
       ]}
-    />
+      >
+      <div className="desc">
+      <Paragraph>
+        <CheckCircleOutlined className="site-result-demo-error-icon" /> view on the blockchain <a href={viewOnExplorer} target="_blank" rel="noopener noreferrer">here&gt;</a>
+      </Paragraph>
+
+    </div>
+    </Result>
   );
 }

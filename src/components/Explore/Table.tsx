@@ -52,7 +52,6 @@ const columns: TableProps<DataType>["columns"] = [
 
 const Table_: React.FC = () => {
   const { data: invoice, isLoading } = useInvoices();
-  console.log("Invoices", invoice?.data);
 
   const filtered = (invoice?.data || []).map((invoice: any) => ({
     ...invoice,
