@@ -98,9 +98,6 @@ function CreateInvoice() {
       setLoading(true);
       console.log(invoice.amount);
       //request the public key of the merchant
-      if (!publicKey) {
-        await connect();
-      }
 
       //send the public key and invoice data to the backend to prepare the transaction
       // await prepareTransaction.mutateAsync({})
