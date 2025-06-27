@@ -80,7 +80,7 @@ function Pay() {
   const [tokenPrices, setTokenPrices] = useState<{ [key: string]: number }>({});
 
 
-  const address = "0x1a983c4e0b9f57b5b34b6c758...";
+  const address = "0x8e8XXXXXXXX";
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -162,7 +162,7 @@ function Pay() {
       {/* 2. Manual Payment */}
       <section className="flex flex-col gap-4 my-6">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
-          2. Pay Manually by Transfer
+          2. Pay Manually by Transfer   <Tag color="red">coming soon</Tag>
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
           Transfer the exact amount from your own wallet. Copy the address and
@@ -177,7 +177,7 @@ function Pay() {
       {/* 3. Scan QR Code */}
       <section className="flex flex-col items-center gap-3 my-6">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
-          3. Scan QR Code
+          3. Scan QR Code <Tag color="red">coming soon</Tag>
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
           Open your Paybeam Wallet app and scan this QR code to pay instantly.
