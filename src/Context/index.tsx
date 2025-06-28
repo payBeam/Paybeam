@@ -45,6 +45,8 @@ const UserContext = React.createContext<{
     setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
     txHash: string;
     setTxHash: React.Dispatch<React.SetStateAction<string>>;
+    setInvoiceZeta: React.Dispatch<React.SetStateAction<number>>;
+    invoiceZeta: number;
     
 
 }>(undefined);
@@ -56,6 +58,7 @@ export const useUserContext = () => {
     const [steps, setSteps] = useState(0);
     const [memo, setMemo] = useState("")
     const [txHash, setTxHash] = useState("");
+    const [invoiceZeta, setInvoiceZeta] = useState(0);
      const [merchant, setMerchant] = useState({
         name: "",
         description: "",
@@ -92,7 +95,9 @@ export const useUserContext = () => {
         isDarkMode,
         setIsDarkMode,
         txHash,
-        setTxHash
+        setTxHash,
+        setInvoiceZeta,
+        invoiceZeta
     };
 }; 
 

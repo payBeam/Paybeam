@@ -11,6 +11,8 @@ import { addInvoice } from "@/redux/slice/SettleInvoiceSlice";
 import { Alert, Button, Result, Spin, Typography } from "antd";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import Web3Providers from "@/providers/web3Provider";
+import '@rainbow-me/rainbowkit/styles.css';
 
 const { Title, Text } = Typography;
 
@@ -76,6 +78,8 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   }
 
   return (
+    
+    <Web3Providers>
     <div className="mx-w-lg md:max-w-xl  mx-auto p-4 py-8">
       <Nav1 />
           <Alert
@@ -87,6 +91,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
       <div className="h-8" />
       <InvoiceDetails invoice={invoice?.data && invoice?.data} />
     </div>
+    </Web3Providers>
   );
 }
 

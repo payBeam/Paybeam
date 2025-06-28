@@ -1,17 +1,14 @@
 import { useClient } from "@/Context/index";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
+import { SUPPORTED_TOKENS } from "@/web3/supportedToken";
 import { Button, Flex, QRCode, Statistic, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import {
-  FaBitcoin,
   FaCheckCircle,
-  FaEthereum,
-  FaRegCopy,
+  FaRegCopy
 } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
-import { SiBinance, SiCoinbase, SiFantom, SiPolygon } from "react-icons/si";
-import { TbCurrencySolana } from "react-icons/tb";
 
 const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
 
@@ -84,11 +81,13 @@ function Pay() {
 
   useEffect(() => {
     const fetchPrices = async () => {
-      const ids = supportedTokens.map((t) => t.id).join(",");
+      const ids = SUPPORTED_TOKENS.map((t) => t.id).join(",");
+      console.log("Fetching token prices for:", ids);
       const res = await fetch(
         `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
       );
       const data = await res.json();
+    console.log("Fetched token prices:", data);
       setTokenPrices(data);
     };
     fetchPrices();
@@ -123,7 +122,7 @@ function Pay() {
           Supported Tokens
         </h3>
         <Flex wrap="wrap" justify="center" align="center" gap="8px 12px">
-          {supportedTokens.map((token) => {
+          {SUPPORTED_TOKENS.map((token) => {
             const tokenData = tokenPrices[token.id] as any;
             const price = tokenData?.usd ?? 0;
             const amount =
@@ -134,7 +133,7 @@ function Pay() {
                 amount={amount}
                 color={token.color}
                 icon={token.icon}
-                label={token.label}
+                label={token.name}
               />
             );
           })}
@@ -199,24 +198,3 @@ function Pay() {
 
 export default Pay;
 
-const supportedTokens = [
-  { id: "ethereum", label: "Ethereum", icon: <FaEthereum />, color: "#627eea" },
-  { id: "binancecoin", label: "BNB", icon: <SiBinance />, color: "#f3ba2f" },
-  {
-    id: "coinbase-wrapped-bitcoin",
-    label: "Coinbase",
-    icon: <SiCoinbase />,
-    color: "#1652f0",
-  },
-  {
-    id: "solana",
-    label: "Solana",
-    icon: <TbCurrencySolana />,
-    color: "#9945FF",
-  },
-  { id: "bitcoin", label: "Bitcoin", icon: <FaBitcoin />, color: "#f7931a" },
-  { id: "polygon", label: "Polygon", icon: <SiPolygon />, color: "#a100ff" },
-  { id: "fantom", label: "Fantom", icon: <SiFantom />, color: "#13B5EC" },
-  { id: "avalanche-2", label: "Avalanche", color: "#e84142" },
-  { id: "zetachain", label: "ZetaChain", color: "green" },
-];

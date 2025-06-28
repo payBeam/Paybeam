@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Converter from  "@/components/CustomInputField/index";
 
 dayjs.extend(customParseFormat);
 
@@ -74,7 +75,7 @@ function Screens({ steps }: { steps: number }) {
 }
 
 function CreateInvoice() {
-  const { invoice, setInvoice, setOpenCreateInvoiceModal, setSteps, setMemo, setTxHash } =
+  const { invoice, invoiceZeta, setInvoice, setOpenCreateInvoiceModal, setSteps, setMemo, setTxHash } =
     useClient();
   const [loading, setLoading] = useState(false);
 
@@ -90,7 +91,7 @@ function CreateInvoice() {
       if (loading) return;
       setLoading(true);
 
-      if (+invoice.amount <= 0) {
+      if (+invoiceZeta <= 0) {
         toast.error("Please put an amount");
         return;
       }
@@ -102,7 +103,7 @@ function CreateInvoice() {
       //send the public key and invoice data to the backend to prepare the transaction
       // await prepareTransaction.mutateAsync({})
       await mutation.mutateAsync(
-        { ...invoice, amount: +invoice.amount },
+        { ...invoice, amount: +invoiceZeta },
         {
           onSuccess: async (data: any) => {
             // console.log("data", data.data);
@@ -138,18 +139,15 @@ function CreateInvoice() {
             size="large"
             value={invoice.description}
             onChange={handleInputChange}
+            className="!bg-white !text-gray-900 !border-gray-300 
+             dark:!bg-gray-800 dark:!text-white dark:!border-gray-600 
+             placeholder-gray-400 dark:placeholder-gray-500 
+             focus:!border-blue-500 focus:!shadow-none"
           />
         </div>
       </div>
-      <div className="flex flex-col  space-y-3 w-[100%]">
-        <p>amount</p>
-        <Input
-          name="amount"
-          type="number"
-          placeholder="amount is USDC"
-          value={invoice.amount}
-          onChange={handleInputChange}
-        />
+      <div className="flex flex-col mt-4 space-y-3 w-[100%]">
+        <Converter />
       </div>
       <div className="flex justify-end space-x-3 p-6 border-t">
         <Button
