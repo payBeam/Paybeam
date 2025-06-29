@@ -1,9 +1,19 @@
 import { SiBinance, SiCoinbase } from "react-icons/si";
-import { base, bsc, zetachainAthensTestnet } from "wagmi/chains";
+import  { base, bsc, zetachainAthensTestnet } from "wagmi/chains";
+import type { ReactNode } from "react";
+import type { Chain } from "wagmi/chains";
 
+export type TokenInfo  = {
+  id: string;
+  chain: Chain; // or a more specific type if you have a Chain enum/type
+  symbol: string;
+  name: string;
+  decimals: number;
+  color: string;
+  icon?: ReactNode;
+};
 
-
-export const SUPPORTED_TOKENS = [
+export const SUPPORTED_TOKENS: TokenInfo[]  = [
   {
     id:"binancecoin",
     chain: bsc,

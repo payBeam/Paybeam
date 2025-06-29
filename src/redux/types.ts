@@ -21,9 +21,10 @@ export interface Token {
 export interface SettleInvoiceType {
   memo: string;
   step: number;
-  token: Token | null;
+  relayer: Token | null;
   paymentMode: PaymentModeType | null;
-  amount: number
+  amount: number,
+  dollarPrice: number;
 }
 
 export type PaymentModeType = "payMyself" | "split";

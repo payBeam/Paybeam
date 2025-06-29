@@ -1,7 +1,10 @@
+"use client";
 import { useClient } from "@/Context/index";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
+import type { TokenInfo } from "@/web3/supportedToken";
 import { SUPPORTED_TOKENS } from "@/web3/supportedToken";
+import { CheckOutlined } from "@ant-design/icons";
 import { Button, Flex, QRCode, Statistic, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import {
@@ -42,15 +45,21 @@ const TokenTag = ({
   amount,
   icon,
   label,
+  onClick,
+  selected
 }: {
   amount: string;
   color: string;
   icon?: React.ReactNode;
   label: string;
+  onClick?: () => void;
+  selected: string
 }) => {
   const { isDarkMode } = useClient();
+
   return (
     <Tag
+      onClick={onClick}
       color={color}
       style={{
         borderRadius: "999px",
@@ -62,34 +71,42 @@ const TokenTag = ({
         display: "inline-flex",
         alignItems: "center",
         gap: "8px",
+        cursor: "pointer",
+        userSelect: "none",
+        transition: "all 0.2s ease-in-out",
       }}
     >
       {icon}
       <span style={{ fontWeight: 500 }}>{label}</span>
       <span style={{ color: "#888" }}>({amount})</span>
+      {selected === label && <CheckOutlined style={{ marginLeft: 6 }} />}
     </Tag>
   );
 };
 
-function Pay() {
+
+
+ function Pay() {
   const dispatch = useAppDispatch();
   const invoiceSettlement = useAppSelector((state) => state.settleInvoice);
   const [tokenPrices, setTokenPrices] = useState<{ [key: string]: number }>({});
-
-
+  const [tokenToPayWith, setTokenToPayWith] = useState<TokenInfo | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string>("")
   const address = "0x8e8XXXXXXXX";
+  const [amountToPay, setAmountToPay] = useState<string>("");
 
   useEffect(() => {
     const fetchPrices = async () => {
-      const ids = SUPPORTED_TOKENS.map((t) => t.id).join(",");
-      console.log("Fetching token prices for:", ids);
-      const res = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
-      );
-      const data = await res.json();
-    console.log("Fetched token prices:", data);
-      setTokenPrices(data);
+      try {
+        const res = await fetch("/api/prices");
+        const { data } = await res.json();
+        console.log("Fetched token prices:", data);
+        setTokenPrices(data);
+      } catch (err) {
+        console.error("Error fetching prices from API route:", err);
+      }
     };
+
     fetchPrices();
   }, []);
 
@@ -122,11 +139,14 @@ function Pay() {
           Supported Tokens
         </h3>
         <Flex wrap="wrap" justify="center" align="center" gap="8px 12px">
-          {SUPPORTED_TOKENS.map((token) => {
+          {SUPPORTED_TOKENS.map( (token) => {
+            // the price from the zata base is alwys in zeta, 
+            // so let's convery to usd first
+            const usdPrice = invoiceSettlement.dollarPrice;
             const tokenData = tokenPrices[token.id] as any;
             const price = tokenData?.usd ?? 0;
-            const amount =
-              price > 0 ? (invoiceSettlement.amount / price).toFixed(6) : "Loading...";
+            const amount = 
+              price > 0 ? (usdPrice / price).toFixed(6) : "Loading...";
             return (
               <TokenTag
                 key={token.id}
@@ -134,6 +154,14 @@ function Pay() {
                 color={token.color}
                 icon={token.icon}
                 label={token.name}
+                selected={selectedTag}
+                onClick={() => {
+                  console.log("Clicked", token);
+                  setTokenToPayWith(token)
+                  setSelectedTag(token.name)
+                  setAmountToPay(amount);
+              
+                }}
               />
             );
           })}
@@ -148,8 +176,8 @@ function Pay() {
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
           1. Pay Directly from Wallet
         </h3>
-        <Button type="primary" block size="large" style={{ fontWeight: "600" }}>
-          Pay with Wallet
+        <Button type="primary" disabled={!tokenToPayWith} block size="large" style={{ fontWeight: "600" }}>
+          {tokenToPayWith ? `Pay ${amountToPay} with ${tokenToPayWith.name}` : "Pay with Wallet"}
         </Button>
         <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
           Use supported wallets for quick and secure payment.

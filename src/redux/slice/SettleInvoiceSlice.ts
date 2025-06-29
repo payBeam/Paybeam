@@ -7,9 +7,10 @@ import { PaymentModeType, SettleInvoiceType } from "../types";
 const initialState: SettleInvoiceType = {
   memo: "",
   step: 0,
-  token: null,
+  relayer: null,
   paymentMode: null,
   amount: 0,
+  dollarPrice: 0
 };
 
 export const SettleInvoiceSlice = createSlice({
@@ -42,6 +43,11 @@ export const SettleInvoiceSlice = createSlice({
         state.paymentMode = payload;
       }
     },
+    addDollarPrice: (state, { payload }: PayloadAction<number>) => {
+      if (state) {
+        state.dollarPrice = payload;
+      }
+    }
   },
 });
 
@@ -51,6 +57,7 @@ export const {
   addPaymentMode,
   changeStep,
   addInvoice,
+  addDollarPrice
 } = SettleInvoiceSlice.actions;
 
 export default SettleInvoiceSlice.reducer;
