@@ -38,7 +38,8 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
         amount: invoice.data.amount,
         step: 0,
         relayer: null,
-        paymentMode: null
+        paymentMode: null,
+        dollarPrice: 0
       };
       dispatch(addInvoice(payload));
     }
