@@ -2,16 +2,31 @@
 import { useClient } from "@/Context/index";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
+import zetaAbi from "@/web3/abi/zeta-abi.json";
 import type { TokenInfo } from "@/web3/supportedToken";
 import { SUPPORTED_TOKENS } from "@/web3/supportedToken";
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Flex, QRCode, Statistic, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   FaCheckCircle,
   FaRegCopy
 } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
+import {
+  useAccount,
+  useConnect,
+  useWriteContract,
+} from "wagmi";
+// import erc20Abi from "@/web3/abi/erc-20.json";
+import { CA } from "@/web3/hooks";
+import { config } from "@/web3/wagmi";
+import { getChainId, switchChain } from '@wagmi/core';
+import { parseEther } from "viem";
+import { injected } from "wagmi/connectors";
+
+
 
 const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
 
@@ -26,7 +41,7 @@ const Copyable = ({ label, value }: { label: string; value: string }) => {
 
   return (
     <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md text-sm w-full">
-      <div className="truncate text-sm">{value}</div>
+      <div className="truncate text-sm">{value.slice(0, 10)}...</div>
       <Tooltip title={copied ? "Copied!" : `Copy ${label}`}>
         <button onClick={handleCopy} className="ml-2">
           {copied ? (
@@ -92,8 +107,10 @@ const TokenTag = ({
   const [tokenPrices, setTokenPrices] = useState<{ [key: string]: number }>({});
   const [tokenToPayWith, setTokenToPayWith] = useState<TokenInfo | null>(null);
   const [selectedTag, setSelectedTag] = useState<string>("")
-  const address = "0x8e8XXXXXXXX";
   const [amountToPay, setAmountToPay] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const { address, chainId } = useAccount();
+
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -109,6 +126,85 @@ const TokenTag = ({
 
     fetchPrices();
   }, []);
+
+   // -----------------------------------
+   //? PAYING INVOICE TOKENS
+   // -----------------------------------
+
+   const { connectAsync } = useConnect();
+   const { writeContractAsync } = useWriteContract({
+    config,
+  });
+
+  //NO need to approve the contract to spend native tokens
+  const payWithNativeTokens = async() => {
+    try {
+      const data = await writeContractAsync({
+        chainId: tokenToPayWith.chain.id,
+        address: CA,
+        functionName: "payInvoice",
+        abi: zetaAbi,
+        args: [invoiceSettlement.memo],
+        chain:tokenToPayWith.chain,
+        account: address,
+        value: parseEther((amountToPay).toString()),
+      });
+
+      toast.success(`Payment of ${amountToPay} ${tokenToPayWith.symbol} successful!`);
+      //TODO - reload thr invoice or just automatically show a ui syaing it has been paid
+      console.log(" data from payWithNativeTokens",data)
+    } catch(error) {
+      console.error("Error paying with native tokens:", error);
+    }
+  }
+
+  // need to call approve() on the token contract before paying with ZRC-20 tokens
+  const payWithZRC20 = async() => {}
+
+  const handlePayInvoice = async () => {
+    if (!tokenToPayWith) {
+      console.error("No token selected for payment");
+      return;
+    }
+    try {
+      setLoading(true);
+      if (!address) {
+        await connectAsync({
+          connector: injected(),
+        });
+      }
+      // ?  Ensure we're on the correct chain
+      const currentChainId = await getChainId(config);
+      const expectedChainId = tokenToPayWith.chain.id;
+      
+      if (currentChainId !== expectedChainId) {
+        await switchChain(config,{ chainId: expectedChainId });
+      }
+
+          // ✅ At this point, you're on the right chain and connected
+    console.log(`Ready to pay ${tokenToPayWith.symbol} on chain ${expectedChainId}`);
+
+      // console.log(`Paying ${amountToPay} with ${tokenToPayWith.name}`);
+      // ? NATIVE TOKENS
+      if (tokenToPayWith.isNative) {
+      await payWithNativeTokens();
+      return;
+      // ? Same-chain ZRC-20 deposit 
+      } else {
+      await   payWithZRC20();
+      return;
+
+        
+      }
+    } catch (error) {
+      toast.error("Failed to pay invoice. Please try again.");
+      console.error("Error paying invoice:", error);
+    }
+    finally {
+      setLoading(false);
+    }
+  
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-md mx-auto dark:bg-gray-900 rounded-lg shadow-md">
@@ -156,7 +252,6 @@ const TokenTag = ({
                 label={token.name}
                 selected={selectedTag}
                 onClick={() => {
-                  console.log("Clicked", token);
                   setTokenToPayWith(token)
                   setSelectedTag(token.name)
                   setAmountToPay(amount);
@@ -176,7 +271,7 @@ const TokenTag = ({
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
           1. Pay Directly from Wallet
         </h3>
-        <Button type="primary" disabled={!tokenToPayWith} block size="large" style={{ fontWeight: "600" }}>
+        <Button onClick={handlePayInvoice} loading={loading} type="primary" disabled={!tokenToPayWith || loading} block size="large" style={{ fontWeight: "600" }}>
           {tokenToPayWith ? `Pay ${amountToPay} with ${tokenToPayWith.name}` : "Pay with Wallet"}
         </Button>
         <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -195,7 +290,7 @@ const TokenTag = ({
           Transfer the exact amount from your own wallet. Copy the address and
           memo below.
         </p>
-        <Copyable label="Address" value={address} />
+        <Copyable label="Address" value={CA} />
         {/* <Copyable label="Memo" value={invoiceSettlement.memo} /> */}
       </section>
 

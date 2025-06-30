@@ -1,6 +1,6 @@
+import { SUPPORTED_TOKENS } from "@/web3/supportedToken";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { base, bsc, bscTestnet, zetachainAthensTestnet } from "wagmi/chains";
-
+import { bscTestnet } from "wagmi/chains";
 
 // //
 export const config = getDefaultConfig({
@@ -9,30 +9,10 @@ export const config = getDefaultConfig({
   chains: [
     bscTestnet,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
-      ? [ zetachainAthensTestnet, bsc , base ]
+      ? SUPPORTED_TOKENS.map(token => token.chain)
       : []),
   ],
   ssr: true,
 });
 
 
-const SUPPORTED_TOKENS = [
-  {
-    chain: bsc,
-    symbol: "BNB",
-    name: "BNB Chain",
-    decimals: 18,
-  },
-  {
-    chain: base,
-    symbol: "BASE",
-    name: "Base",
-    decimals: 18,
-  },
-  {
-    chain: zetachainAthensTestnet, 
-    symbol: "ZETA",
-    name: "ZetaChain",
-    decimals: 18,
-  },
-];
