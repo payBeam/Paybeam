@@ -8,7 +8,10 @@ import { formatEther } from "viem";
 import { useAppDispatch } from "@/redux/hook";
 import { addToken1, addToken2 } from "@/redux/slice/TokenSlice";
 
-export const CA = "0x05eEEfC9f4cf7A092052e37F96E1c853c3558D65";
+//! deprecate this to favour ZETA_CA
+export const CA = "0xa2B39823120Ea8e7a1f2E3E6864596644eE96689";
+export const BASE_CA = "0xfc527B71eBD1854a32967F44D314FAf99b2aC333";
+export const ZETA_CA = "0xa2B39823120Ea8e7a1f2E3E6864596644eE96689";
 
 // type ReturnType = {
 //   isLoading: boolean;

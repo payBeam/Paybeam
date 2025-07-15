@@ -15,16 +15,16 @@ export type TokenInfo  = {
 };
 
 export const SUPPORTED_TOKENS: TokenInfo[]  = [
-  {
-    id:"binancecoin",
-    chain: bsc,
-    symbol: "BNB",
-    name: "BNB Chain",
-    decimals: 18,
-    color:"#f3ba2f",
-    icon: <SiBinance />,
-    isNative: true 
-  },
+  // {
+  //   id:"binancecoin",
+  //   chain: bsc,
+  //   symbol: "BNB",
+  //   name: "BNB Chain",
+  //   decimals: 18,
+  //   color:"#f3ba2f",
+  //   icon: <SiBinance />,
+  //   isNative: true 
+  // },
   {
     id:"base",
     chain: base,
