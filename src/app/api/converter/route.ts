@@ -10,11 +10,10 @@ export async function GET(request: Request) {
   try {
     console.log("Fetching Zeta price in USD for amount: in API", amount);
     const res = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=zetachain&vs_currencies=usd"
+      "https://api.coingecko.com/api/v3/simple/price?ids=zetachain&vs_currencies=usd",
     );
     const data = await res.json();
     const zetaPrice = data?.zetachain?.usd;
-
 
     if (!zetaPrice || isNaN(amount)) {
       return NextResponse.json({ result: 0 }, { status: 400 });
@@ -29,11 +28,9 @@ export async function GET(request: Request) {
   }
 }
 
-
 //? TO USE THIS API, YOU CAN UNCOMMENT THE FOLLOWING CODE IN YOUR COMPONENT
 /*  
     const res = await fetch(`/api/converter?amount=${invoice?.invoice?.amount}`);
       const { result } = await res.json();
       console.log("Zeta in USD:", result);
 */
-

@@ -1,11 +1,10 @@
 "use client";
-import React from 'react'
+import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "@/redux/store";
-import { UserContextProvider } from "@/Context"
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ProgressProvider } from '@bprogress/next/app';
-
+import { UserContextProvider } from "@/Context";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ProgressProvider } from "@bprogress/next/app";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,7 +14,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
 
 function Providers({ children }) {
   return (
@@ -30,13 +28,12 @@ function Providers({ children }) {
             height="4px"
             shallowRouting
           >
-
             {children}
           </ProgressProvider>
         </UserContextProvider>
       </QueryClientProvider>
     </ReduxProvider>
-  )
+  );
 }
 
-export default Providers
+export default Providers;

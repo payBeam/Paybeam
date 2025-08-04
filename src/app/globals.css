@@ -1,5 +1,3 @@
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,7 +23,7 @@
 body {
   /* background-color: #f0f0f0; */
   /* Light gray */
-  background-image: url('/images/background.jpg');
+  background-image: url("/images/background.jpg");
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -115,7 +113,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
 
 /* Defaulting to dark colors */
 /* 

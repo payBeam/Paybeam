@@ -5,11 +5,7 @@ import Link from "next/link";
 
 const { Header, Content, Sider } = Layout;
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <Layout style={{ minHeight: "100vh", background: "#2C120D" }}>
       <Sider collapsible>

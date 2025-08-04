@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function EVMPayment() {
-  return (
-    <div>EVMPayment</div>
-  )
+  return <div>EVMPayment</div>;
 }
 
-export default EVMPayment
+export default EVMPayment;

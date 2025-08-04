@@ -4,7 +4,7 @@
 // clcekning on toekn of choice shows qr code to scan to pay, function to call to pay, address to transfer to with memo
 // then a listening ui to show when the payment is successful
 //
-import React from "react"
+import React from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
 import { FaEthereum } from "react-icons/fa";
@@ -20,7 +20,10 @@ function PaymentOption() {
     <div className="flex flex-col">
       {/* Header with back button and title */}
       <div className="flex justify-between items-center">
-        <div onClick={() => dispatch(changeStep(invoiceSettlement.step - 1))} className="cursor-pointer">
+        <div
+          onClick={() => dispatch(changeStep(invoiceSettlement.step - 1))}
+          className="cursor-pointer"
+        >
           <IoIosArrowBack />
         </div>
         <h1 className="text-2xl font-bold mb-4">Pay With</h1>
@@ -72,4 +75,3 @@ const EVMPaymentButton = () => {
     </button>
   );
 };
-

@@ -8,7 +8,7 @@ import { useClient } from "@/Context/index";
 import { useBalance } from "@/hooks/useInvoice";
 import { useRouter } from "@/hooks/useRouterWithProgress";
 import { useUser } from "@/hooks/useUser";
-import { Alert } from 'antd';
+import { Alert } from "antd";
 import MerchantCreationForm from "./CreateMerchant";
 import CreateInvoiceModal from "./Form";
 import Table from "./Table";
@@ -29,7 +29,7 @@ const Explore = () => {
   // console.log("balance", balance);
 
   const { openCreateInvoiceModal, setOpenCreateInvoiceModal } = useClient();
-  
+
   const handleOpenInvoiceModal = () => {
     setOpenCreateInvoiceModal((prev: boolean) => !prev);
   };
@@ -43,12 +43,12 @@ const Explore = () => {
       ) : (
         <div className="">
           <Nav1 />
-        <Alert
-          message="payBeam is currently in development"
-          description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
-          type="info"
-          showIcon
-        />
+          <Alert
+            message="payBeam is currently in development"
+            description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
+            type="info"
+            showIcon
+          />
           {user?.data && (
             <div className="flex justify-center items-center">
               {user?.data?.merchant?.id ? (
@@ -59,7 +59,7 @@ const Explore = () => {
                   </h2>
                   <div className="flex space-x-3  items-center justify-center p-4 rounded-md ">
                     <p className="text-5xl font-bold text-green-600">
-                      {balance?.data === undefined  ? "0" : balance?.data}
+                      {balance?.data === undefined ? "0" : balance?.data}
                     </p>
                     <p className="text-lg text-green-600">ZETA</p>
                   </div>
@@ -86,7 +86,7 @@ const Explore = () => {
                   {/* transactions */}
                   <div className="flex flex-col justify-center items-center mt-8 space-y-3">
                     <h1 className="text-2xl font-bold">Transactions</h1>
-                   
+
                     <Table />
                   </div>
                 </div>
@@ -107,7 +107,6 @@ const Explore = () => {
 };
 
 export default Explore;
-
 
 export const projects = [
   {

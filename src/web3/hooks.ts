@@ -1,13 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { useWriteContract, useReadContract, useAccount } from "wagmi";
-import zetaAbi from "./abi/zeta-abi.json";
-import erc20Abi from "./abi/erc-20.json";
-import type { Address } from "viem";
-import { config } from "@/web3/wagmi";
-import { formatEther } from "viem";
-import { useAppDispatch } from "@/redux/hook";
-import { addToken1, addToken2 } from "@/redux/slice/TokenSlice";
-
 //! deprecate this to favour ZETA_CA
 export const CA = "0xa2B39823120Ea8e7a1f2E3E6864596644eE96689";
 export const BASE_CA = "0xfc527B71eBD1854a32967F44D314FAf99b2aC333";

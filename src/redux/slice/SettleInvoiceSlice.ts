@@ -10,7 +10,7 @@ const initialState: SettleInvoiceType = {
   relayer: null,
   paymentMode: null,
   amount: 0,
-  dollarPrice: 0
+  dollarPrice: 0,
 };
 
 export const SettleInvoiceSlice = createSlice({
@@ -47,7 +47,7 @@ export const SettleInvoiceSlice = createSlice({
       if (state) {
         state.dollarPrice = payload;
       }
-    }
+    },
   },
 });
 
@@ -57,7 +57,7 @@ export const {
   addPaymentMode,
   changeStep,
   addInvoice,
-  addDollarPrice
+  addDollarPrice,
 } = SettleInvoiceSlice.actions;
 
 export default SettleInvoiceSlice.reducer;

@@ -9,10 +9,8 @@ export const config = getDefaultConfig({
   chains: [
     bscTestnet,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
-      ? SUPPORTED_TOKENS.map(token => token.chain)
+      ? SUPPORTED_TOKENS.map((token) => token.chain)
       : []),
   ],
   ssr: true,
 });
-
-

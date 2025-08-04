@@ -7,11 +7,7 @@ import { useWalletKit } from "@/hooks/useStellarWaletKit";
 const { Text } = Typography;
 
 const ConnectButton: React.FC = () => {
-  const {
-    publicKey,
-    connect,
-    disconnect,
-  } = useWalletKit();
+  const { publicKey, connect, disconnect } = useWalletKit();
 
   const isConnected = !!publicKey;
 
@@ -21,11 +17,8 @@ const ConnectButton: React.FC = () => {
       align="center"
       style={{ width: "100%", textAlign: "center", marginTop: 24 }}
     >
-      <Text
-        ellipsis={{ tooltip: publicKey ?? "" }}
-        style={{ maxWidth: "18em", display: "block" }}
-      >
-        {isConnected ? `${publicKey.slice(0,10)}...` : ""}
+      <Text ellipsis={{ tooltip: publicKey ?? "" }} style={{ maxWidth: "18em", display: "block" }}>
+        {isConnected ? `${publicKey.slice(0, 10)}...` : ""}
       </Text>
 
       <Space>

@@ -1,14 +1,14 @@
 import { useClient } from "@/Context/index";
 import { useCreateInvoice } from "@/hooks/useInvoice";
 import { useWalletKit } from "@/hooks/useStellarWaletKit";
-import {CheckCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined } from "@ant-design/icons";
 import type { TimePickerProps } from "antd";
 import { Button, Input, Modal, Result, Steps, Typography } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Converter from  "@/components/CustomInputField/index";
+import Converter from "@/components/CustomInputField/index";
 
 dayjs.extend(customParseFormat);
 
@@ -16,8 +16,7 @@ const { Paragraph, Text } = Typography;
 const { TextArea } = Input;
 
 function CreateMerchant() {
-  const { steps, setSteps, setOpenCreateInvoiceModal, openCreateInvoiceModal } =
-    useClient();
+  const { steps, setSteps, setOpenCreateInvoiceModal, openCreateInvoiceModal } = useClient();
 
   const onChange: TimePickerProps["onChange"] = (time, timeString) => {
     console.log(time, timeString);
@@ -57,26 +56,28 @@ function CreateMerchant() {
 export default CreateMerchant;
 
 function Screens({ steps }: { steps: number }) {
-
   switch (steps) {
     case 0:
       return <CreateInvoice />;
     case 1:
       return <CopyLink />;
     case 2:
-      return (
-        <p className="flex justify-center font-bold  text-2xl ">
-          coming soon ❤🏗
-        </p>
-      );
+      return <p className="flex justify-center font-bold  text-2xl ">coming soon ❤🏗</p>;
     default:
       return <p>Unknown status</p>;
   }
 }
 
 function CreateInvoice() {
-  const { invoice, invoiceZeta, setInvoice, setOpenCreateInvoiceModal, setSteps, setMemo, setTxHash } =
-    useClient();
+  const {
+    invoice,
+    invoiceZeta,
+    setInvoice,
+    setOpenCreateInvoiceModal,
+    setSteps,
+    setMemo,
+    setTxHash,
+  } = useClient();
   const [loading, setLoading] = useState(false);
 
   const mutation = useCreateInvoice();
@@ -107,18 +108,18 @@ function CreateInvoice() {
         {
           onSuccess: async (data: any) => {
             // console.log("data", data.data);
-            setTxHash( data.data.data.txHash)
+            setTxHash(data.data.data.txHash);
             setMemo(data.data.data.invoice.id);
             setSteps(1);
             setInvoice({
               description: "",
-              amount: 0
+              amount: 0,
             });
           },
           onError: (error) => {
             toast.error(error.message);
           },
-        }
+        },
       );
     } catch (err) {
       toast.error(err.message);
@@ -207,15 +208,17 @@ function CopyLink() {
           }}
         >
           Close
-        </Button>
+        </Button>,
       ]}
-      >
+    >
       <div className="desc">
-      <Paragraph>
-        <CheckCircleOutlined className="site-result-demo-error-icon" /> view on the blockchain <a href={viewOnExplorer} target="_blank" rel="noopener noreferrer">here&gt;</a>
-      </Paragraph>
-
-    </div>
+        <Paragraph>
+          <CheckCircleOutlined className="site-result-demo-error-icon" /> view on the blockchain{" "}
+          <a href={viewOnExplorer} target="_blank" rel="noopener noreferrer">
+            here&gt;
+          </a>
+        </Paragraph>
+      </div>
     </Result>
   );
 }

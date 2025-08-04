@@ -23,7 +23,7 @@ export interface SettleInvoiceType {
   step: number;
   relayer: Token | null;
   paymentMode: PaymentModeType | null;
-  amount: number,
+  amount: number;
   dollarPrice: number;
 }
 

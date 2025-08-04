@@ -2,17 +2,14 @@
 import Nav1 from "@/components/Navbar/Nav1";
 import InvoiceDetails from "@/components/PayInvoice";
 import { useInvoice } from "@/hooks/useInvoice";
-import {
-  usePrepApproveContract,
-  usePreparePayTx,
-} from "@/hooks/useStellarFunctions";
+import { usePrepApproveContract, usePreparePayTx } from "@/hooks/useStellarFunctions";
 import { useAppDispatch } from "@/redux/hook";
 import { addInvoice } from "@/redux/slice/SettleInvoiceSlice";
 import { Alert, Button, Result, Spin, Typography } from "antd";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import Web3Providers from "@/providers/web3Provider";
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
 
 const { Title, Text } = Typography;
 
@@ -39,7 +36,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
         step: 0,
         relayer: null,
         paymentMode: null,
-        dollarPrice: 0
+        dollarPrice: 0,
       };
       dispatch(addInvoice(payload));
     }
@@ -65,11 +62,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               : "An unknown error occurred"
           }
           extra={[
-            <Button
-              type="primary"
-              key="retry"
-              onClick={() => window.location.reload()}
-            >
+            <Button type="primary" key="retry" onClick={() => window.location.reload()}>
               Retry
             </Button>,
           ]}
@@ -79,19 +72,18 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   }
 
   return (
-    
     <Web3Providers>
-    <div className="mx-w-lg md:max-w-xl  mx-auto p-4 py-8">
-      <Nav1 />
-          <Alert
-        message="payBeam is currently in development"
-        description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
-        type="info"
-        showIcon
-      />
-      <div className="h-8" />
-      <InvoiceDetails invoice={invoice?.data && invoice?.data} />
-    </div>
+      <div className="mx-w-lg md:max-w-xl  mx-auto p-4 py-8">
+        <Nav1 />
+        <Alert
+          message="payBeam is currently in development"
+          description="We're actively working on integrating support for EVM tokens. Some things may break during this process — thanks for bearing with us!"
+          type="info"
+          showIcon
+        />
+        <div className="h-8" />
+        <InvoiceDetails invoice={invoice?.data && invoice?.data} />
+      </div>
     </Web3Providers>
   );
 }

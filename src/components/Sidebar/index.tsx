@@ -5,7 +5,7 @@ import {
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
-  IconLogout
+  IconLogout,
 } from "@tabler/icons-react";
 // import { Link, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -13,10 +13,8 @@ import { cn } from "@/lib/utils";
 import Logo from "../Logo";
 import Link from "next/link";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
-import ThemeToggle from "@/components/ThemeToggle"
+import ThemeToggle from "@/components/ThemeToggle";
 import { logout } from "@/utils/auth";
-
-
 
 export function SidebarDemo({ children }) {
   const links = [
@@ -40,7 +38,7 @@ export function SidebarDemo({ children }) {
     <div
       className={cn(
         "rounded-md flex flex-col md:flex-row bg-neutral-800 w-full flex-1 mx-auto border border-customPurple overflow-y-hidden",
-        "h-screen"
+        "h-screen",
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -56,14 +54,14 @@ export function SidebarDemo({ children }) {
 
           <ThemeToggle />
 
-          <div className="cursor-pointer" onClick={() => logout()}><IconLogout /></div>
+          <div className="cursor-pointer" onClick={() => logout()}>
+            <IconLogout />
+          </div>
 
           <div>{/* <ConnectButton /> */}</div>
         </SidebarBody>
       </Sidebar>
-      <div className="overflow-y-scroll w-full h-screen  bg-background ">
-        {children}
-      </div>
+      <div className="overflow-y-scroll w-full h-screen  bg-background ">{children}</div>
       {/* <Dashboard /> */}
     </div>
   );

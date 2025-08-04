@@ -18,9 +18,7 @@ interface SidebarContextProps {
   animate: boolean;
 }
 
-const SidebarContext = createContext<SidebarContextProps | undefined>(
-  undefined
-);
+const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
@@ -91,7 +89,7 @@ export const DesktopSidebar = ({
       <motion.div
         className={cn(
           "h-full px-4 py-4 hidden md:flex md:flex-col bg-custom-gradient  text-white   w-[300px] flex-shrink-0 font-sans",
-          className
+          className,
         )}
         animate={{
           width: animate ? (open ? "300px" : "60px") : "300px",
@@ -106,17 +104,13 @@ export const DesktopSidebar = ({
   );
 };
 
-export const MobileSidebar = ({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"div">) => {
+export const MobileSidebar = ({ className, children, ...props }: React.ComponentProps<"div">) => {
   const { open, setOpen } = useSidebar();
   return (
     <>
       <div
         className={cn(
-          "h-10 px-4 font-sans py-4 flex flex-row md:hidden  items-center justify-between bg-custom-gradient  text-white  w-full z-500"
+          "h-10 px-4 font-sans py-4 flex flex-row md:hidden  items-center justify-between bg-custom-gradient  text-white  w-full z-500",
         )}
         {...props}
       >
@@ -138,7 +132,7 @@ export const MobileSidebar = ({
               }}
               className={cn(
                 "fixed h-full w-full inset-0 bg-customPurple p-10 z-[100] flex flex-col justify-between",
-                className
+                className,
               )}
             >
               <div
@@ -169,10 +163,7 @@ export const SidebarLink = ({
   return (
     <Link
       href={link.href}
-      className={cn(
-        "flex items-center  justify-start gap-2  group/sidebar py-2",
-        className
-      )}
+      className={cn("flex items-center  justify-start gap-2  group/sidebar py-2", className)}
       {...props}
     >
       {link.icon}

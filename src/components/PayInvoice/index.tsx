@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import PayMySelfSreen from "./PayYourself";
 import SplitWithFriendsScreen from "./SplitPayment";
-import {addDollarPrice} from "@/redux/slice/SettleInvoiceSlice";
+import { addDollarPrice } from "@/redux/slice/SettleInvoiceSlice";
 
 function PayInvoice(invoice: any) {
   const dispatch = useAppDispatch();
@@ -13,16 +13,16 @@ function PayInvoice(invoice: any) {
   const dollarPrice = useAppSelector((state) => state.settleInvoice.dollarPrice);
 
   useEffect(() => {
-    const getPrice = async() => {
+    const getPrice = async () => {
       const res = await fetch(`/api/converter?amount=${invoice?.invoice?.amount}`);
       const { result } = await res.json();
       console.log("Zeta in USD:", result);
-      
+
       // const price = await getDollarPrice(invoice?.invoice?.amount)
       dispatch(addDollarPrice(result));
-    }
-    getPrice()
-  }, [])
+    };
+    getPrice();
+  }, []);
 
   return (
     <div className="flex flex-col border rounded-lg  p-5 gap-5">

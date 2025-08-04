@@ -1,5 +1,4 @@
-
-import React from "react"
+import React from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { changeStep } from "@/redux/slice/SettleInvoiceSlice";
 import { FaEthereum } from "react-icons/fa";

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { UserDetails } from "../types";
@@ -11,7 +11,7 @@ export const ProfileSlice = createSlice({
   initialState,
   reducers: {
     addProfile: (state, { payload }: PayloadAction<UserDetails>) => {
-     console.log(payload)
+      console.log(payload);
       if (state === null) {
         return payload;
       }
@@ -20,7 +20,6 @@ export const ProfileSlice = createSlice({
       state.password = payload.password;
       state.createdAt = payload.createdAt;
       state.updatedAt = payload.updatedAt;
-
     },
     clearProfile: () => {
       return initialState;

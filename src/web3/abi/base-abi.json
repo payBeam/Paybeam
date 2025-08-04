@@ -1,0 +1,214 @@
+[
+  {
+    "inputs": [{ "internalType": "address", "name": "gatewayAddress", "type": "address" }],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "token", "type": "address" }],
+    "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  { "inputs": [], "name": "Unauthorized", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "string", "name": "greeting", "type": "string" },
+      { "indexed": false, "internalType": "string", "name": "message", "type": "string" }
+    ],
+    "name": "PingEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "string", "name": "message", "type": "string" },
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "asset", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "bytes", "name": "revertMessage", "type": "bytes" }
+        ],
+        "indexed": false,
+        "internalType": "struct RevertContext",
+        "name": "revertContext",
+        "type": "tuple"
+      }
+    ],
+    "name": "RevertEvent",
+    "type": "event"
+  },
+  { "stateMutability": "payable", "type": "fallback" },
+  {
+    "inputs": [],
+    "name": "counterParty",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "receiver", "type": "address" },
+      {
+        "components": [
+          { "internalType": "address", "name": "revertAddress", "type": "address" },
+          { "internalType": "bool", "name": "callOnRevert", "type": "bool" },
+          { "internalType": "address", "name": "abortAddress", "type": "address" },
+          { "internalType": "bytes", "name": "revertMessage", "type": "bytes" },
+          { "internalType": "uint256", "name": "onRevertGasLimit", "type": "uint256" }
+        ],
+        "internalType": "struct RevertOptions",
+        "name": "revertOptions",
+        "type": "tuple"
+      }
+    ],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "invoiceId", "type": "bytes32" },
+      { "internalType": "address", "name": "receiver", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "address", "name": "asset", "type": "address" },
+      { "internalType": "bytes", "name": "message", "type": "bytes" },
+      {
+        "components": [
+          { "internalType": "address", "name": "revertAddress", "type": "address" },
+          { "internalType": "bool", "name": "callOnRevert", "type": "bool" },
+          { "internalType": "address", "name": "abortAddress", "type": "address" },
+          { "internalType": "bytes", "name": "revertMessage", "type": "bytes" },
+          { "internalType": "uint256", "name": "onRevertGasLimit", "type": "uint256" }
+        ],
+        "internalType": "struct RevertOptions",
+        "name": "revertOptions",
+        "type": "tuple"
+      }
+    ],
+    "name": "depositAndCall",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gateway",
+    "outputs": [{ "internalType": "contract GatewayEVM", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [{ "internalType": "address", "name": "sender", "type": "address" }],
+        "internalType": "struct MessageContext",
+        "name": "context",
+        "type": "tuple"
+      },
+      { "internalType": "bytes", "name": "message", "type": "bytes" }
+    ],
+    "name": "onCall",
+    "outputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "asset", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "bytes", "name": "revertMessage", "type": "bytes" }
+        ],
+        "internalType": "struct RevertContext",
+        "name": "revertContext",
+        "type": "tuple"
+      }
+    ],
+    "name": "onRevert",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "invoiceId", "type": "bytes32" },
+      { "internalType": "address", "name": "payerAddressOnZEVM", "type": "address" },
+      {
+        "components": [
+          { "internalType": "address", "name": "revertAddress", "type": "address" },
+          { "internalType": "bool", "name": "callOnRevert", "type": "bool" },
+          { "internalType": "address", "name": "abortAddress", "type": "address" },
+          { "internalType": "bytes", "name": "revertMessage", "type": "bytes" },
+          { "internalType": "uint256", "name": "onRevertGasLimit", "type": "uint256" }
+        ],
+        "internalType": "struct RevertOptions",
+        "name": "revertOptions",
+        "type": "tuple"
+      }
+    ],
+    "name": "payNativeCrossChain",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "message", "type": "string" }],
+    "name": "ping",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_counterParty", "type": "address" }],
+    "name": "setCounterParty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  { "stateMutability": "payable", "type": "receive" }
+]

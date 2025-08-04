@@ -1,12 +1,8 @@
 // hooks/useStellarWalletKit.tsx
-'use client';
+"use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  allowAllModules,
-  FREIGHTER_ID,
-  StellarWalletsKit,
-} from "@creit.tech/stellar-wallets-kit";
+import { allowAllModules, FREIGHTER_ID, StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const SELECTED_WALLET_ID = "selectedWalletId";
 
@@ -18,9 +14,10 @@ enum WalletNetwork {
 const kit = new StellarWalletsKit({
   modules: allowAllModules(),
   network: WalletNetwork.TESTNET,
-  selectedWalletId: typeof window !== 'undefined'
-    ? localStorage.getItem(SELECTED_WALLET_ID) ?? FREIGHTER_ID
-    : FREIGHTER_ID,
+  selectedWalletId:
+    typeof window !== "undefined"
+      ? (localStorage.getItem(SELECTED_WALLET_ID) ?? FREIGHTER_ID)
+      : FREIGHTER_ID,
 });
 
 export function useWalletKit() {

@@ -22,11 +22,7 @@ const Why = () => {
           <div className="order-2 lg:order-1 w-full">
             {/* // data-aos='fade-right'
         // data-aos-offset='400' */}
-            <div
-              className="flex-1 w-[90%]"
-              data-aos="fade-up"
-              data-aos-delay="600"
-            >
+            <div className="flex-1 w-[90%]" data-aos="fade-up" data-aos-delay="600">
               <Lottie animationData={ICON} loop={true} />
             </div>
             {/* <img src={"/img/why-img.png"} className="" /> */}
@@ -35,9 +31,10 @@ const Why = () => {
           <div className="w-full">
             <h2 className="section-title">Why You Should use payBeam</h2>
             <p className="section-subtitle">
-              payBeam offers seamless, automated payments with effortless transaction splitting, ensuring low-cost, 
-              near-instant transfers powered by blockchain. With smart contracts and multi-signature security, 
-              every transaction is secure, transparent, and verifiable.
+              payBeam offers seamless, automated payments with effortless transaction splitting,
+              ensuring low-cost, near-instant transfers powered by blockchain. With smart contracts
+              and multi-signature security, every transaction is secure, transparent, and
+              verifiable.
             </p>
             {/* <a
               href="https://medium.com/@glintfund"
